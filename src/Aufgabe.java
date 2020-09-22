@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-import java.util.List;
 
 public class Aufgabe {
 	
@@ -7,12 +5,11 @@ public class Aufgabe {
 	int schwierigkeit;
 	double haeufigkeit;
 	
-	protected List<Aufgabenliste> aufgabenliste = new LinkedList();
-	
 	public Aufgabe(String n, int s, double h) {
 		this.name = n;
 		this.schwierigkeit = s;
 		this.haeufigkeit = h;
+		Aufgabenliste.getInstanz().hinzufuegen(this);
 	}
 	
 	public String toString() {
@@ -27,9 +24,5 @@ public class Aufgabe {
 	
 	public void bearbeitenA(String n, int s, double h) {
 		
-	}
-	
-	public void addzuListe(Aufgabenliste l) {
-		aufgabenliste.add(l);
 	}
 }

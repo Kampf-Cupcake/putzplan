@@ -1,13 +1,31 @@
+import java.util.LinkedList;
+import java.util.List;
 
 public class Aufgabenliste {
 
-	protected Aufgabe aufgabe;
+    private static Aufgabenliste instanz;
+    private List<Aufgabe> aufgaben = new LinkedList<Aufgabe>();
+
+    public static Aufgabenliste getInstanz() {
+        if (instanz == null) {
+            instanz = new Aufgabenliste();
+        }
+        return instanz;
+    }
 	
-	
-	public void setAufgabe (Aufgabe a) {
-		this.aufgabe = a;
-		a.addzuListe(this);
+	public void hinzufuegen(Aufgabe a) {
+		aufgaben.add(a);
 	}
 	
+	public List<Aufgabe> ausgeben(){
+		return this.aufgaben;
+	}
 	
+	public String toString() {
+		String s = "";
+		for (Aufgabe a : aufgaben) {
+			s += (a.toString() + "\n");
+		}
+		return s;
+	}
 }
