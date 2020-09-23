@@ -21,7 +21,9 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			JLabel benutzer;
 		JPanel benutzer1 = new JPanel();
 		JPanel benutzer2 = new JPanel();
-		JButton benutzerAnlegen = new JButton();
+		JButton person1 = new JButton();
+		JButton person2 = new JButton();
+		JButton person3 = new JButton();
 
 		JPanel aufgabenHin = new JPanel();
 			JLabel aufgaben;
@@ -49,15 +51,15 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		menu.setBounds(0 + insets.left, 0 + insets.top, 200, 900);
 			
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
-			benutzerMB.setIcon(new ImageIcon("C:\\Users\\inala\\Desktop\\Putzplan\\menu_benutzer2.png"));
+			benutzerMB.setIcon(new ImageIcon("bilder\\icons\\menu_benutzer2.png"));
 			menu.add(benutzerMB);
 			benutzerMB.addActionListener(this);
 			
-			aufgabenMB.setIcon(new ImageIcon("C:\\Users\\inala\\Desktop\\Putzplan\\menu_aufgaben2.png"));
+			aufgabenMB.setIcon(new ImageIcon("bilder\\icons\\menu_aufgaben2.png"));
 			menu.add(aufgabenMB);
 			aufgabenMB.addActionListener(this);
 			
-			kalendarMB.setIcon(new ImageIcon("C:\\Users\\inala\\Desktop\\Putzplan\\menu_kalendar2.png"));
+			kalendarMB.setIcon(new ImageIcon("bilder\\icons\\menu_kalendar2.png"));
 			menu.add(kalendarMB);
 			kalendarMB.addActionListener(this);
 		
@@ -67,7 +69,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		haupt.setBackground(Color.white);
 		
 	//Hauptfläche:Willkommen/Start-Teil
-			ImageIcon start= new ImageIcon("C:\\Users\\inala\\Desktop\\Putzplan\\Hintergruende_willkommen.png");
+			ImageIcon start= new ImageIcon("bilder\\icons\\Hintergruende_willkommen.png");
 			willkommen = new JLabel(start);
 			haupt.add(willkommen);
 			willkommen.setVisible(true);
@@ -76,27 +78,31 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	//Hauptfläche:Benutzer-Teil
 			
 			haupt.add(benutzerHin);
-				ImageIcon benutzerH= new ImageIcon("C:\\Users\\inala\\Desktop\\Putzplan\\Hintergruende_benutzer.png");
+				ImageIcon benutzerH= new ImageIcon("bilder\\icons\\Hintergruende_benutzer.png");
 				benutzer = new JLabel(benutzerH);
 				benutzerHin.add(benutzer);
 				benutzerHin.setVisible(false);
 			haupt.add(benutzer1);
 			
-			benutzer1.setLayout(new BoxLayout(benutzer1, BoxLayout.X_AXIS));
-				benutzer1.add(benutzerAnlegen);
-				benutzerAnlegen.addActionListener(this);
+			//benutzer1.setLayout(new BoxLayout(benutzer1, BoxLayout.X_AXIS));
+				benutzer1.add(person1);
+				person1.addActionListener(this);
+				benutzer1.add(person2);
+				person2.addActionListener(this);
+				benutzer1.add(person3);
+				person3.addActionListener(this);
 				benutzer1.setVisible(false);
 
 			
 	//Hauptfläche:Aufgaben-Teil
-			ImageIcon aufgabenH= new ImageIcon("C:\\Users\\inala\\Desktop\\Putzplan\\Hintergruende_aufgaben.png");
+			ImageIcon aufgabenH= new ImageIcon("bilder\\icons\\Hintergruende_aufgaben.png");
 			aufgaben = new JLabel(aufgabenH);
 			haupt.add(aufgaben);
 			aufgaben.setVisible(false);
 
 			
 	//Hauptfläche:Kalendar-Teil
-			ImageIcon kalendarH= new ImageIcon("C:\\Users\\inala\\Desktop\\Putzplan\\Hintergruende_kalendar.png");
+			ImageIcon kalendarH= new ImageIcon("bilder\\icons\\Hintergruende_kalendar.png");
 			kalendar = new JLabel(kalendarH);
 			haupt.add(kalendar);
 			kalendar.setVisible(false);
@@ -120,6 +126,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
         	willkommen.setVisible(false);
         	//benutzerHin.setVisible(true);
         	benutzer1.setVisible(true);
+
         	aufgaben.setVisible(false);
         	kalendar.setVisible(false);
         }
@@ -137,7 +144,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
         	aufgaben.setVisible(false);
         	kalendar.setVisible(true);
         }
-        else if(ae.getSource() == this.benutzerAnlegen) {
+        else if(ae.getSource() == this.person1) {
         	
         }
     
