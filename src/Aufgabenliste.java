@@ -3,24 +3,24 @@ import java.util.List;
 
 public class Aufgabenliste {
 
-    private static Aufgabenliste instanz;
-    private List<Aufgabe> aufgaben = new LinkedList<Aufgabe>();
+	private static Aufgabenliste instanz;
+	private List<Aufgabe> aufgaben = new LinkedList<Aufgabe>();
 
-    public static Aufgabenliste getInstanz() {
-        if (instanz == null) {
-            instanz = new Aufgabenliste();
-        }
-        return instanz;
-    }
-	
+	public static Aufgabenliste getInstanz() {
+		if (instanz == null) {
+			instanz = new Aufgabenliste();
+		}
+		return instanz;
+	}
+
 	public void hinzufuegen(Aufgabe a) {
 		aufgaben.add(a);
 	}
-	
-	public List<Aufgabe> ausgeben(){
+
+	public List<Aufgabe> ausgeben() {
 		return this.aufgaben;
 	}
-	
+
 	public String toString() {
 		String s = "";
 		for (Aufgabe a : aufgaben) {
