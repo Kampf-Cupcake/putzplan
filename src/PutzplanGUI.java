@@ -86,11 +86,11 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		// ImageIcon kalendarH = new
 		// ImageIcon("bilder\\icons\\Hintergruende_kalendar.png");
 
-		kalendar = new MonthPanel(8, 2020);
-		haupt.add(kalendar);
+		kalender = new MonthPanel(8, 2020);
+		haupt.add(kalender);
 		haupt.setBackground(new Color(22,35,54));
-		// kalendar.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
-		kalendar.setVisible(true);
+		// kalender.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
+		kalender.setVisible(true);
 
 		/**
 		 * Hauptfläche:Willkommen/Start-Teil ImageIcon start= new
@@ -195,7 +195,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			benutzer1.setVisible(false);
 			aufgaben.setVisible(true);
 		} else if (ae.getSource() == this.kalenderMB) {
-			kalendar.setVisible(false);
+			kalender.setVisible(false);
 			haupt.setBackground(new Color(99,0,0));
 		} else if (ae.getSource() == this.person1) {
 
