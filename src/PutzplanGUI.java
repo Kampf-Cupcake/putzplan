@@ -1,80 +1,90 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.Color;
-import java.awt.event.ActionListener;
 import java.util.Calendar;
 
 public class PutzplanGUI extends JFrame implements ActionListener {
 
 	JPanel hintergrund = new JPanel();
-
-	JPanel menu = new JPanel();
-	JButton benutzerMB = new JButton();
-	JButton aufgabenMB = new JButton();
-	JButton kalendarMB = new JButton();
-
 	JPanel haupt = new JPanel();
-	// JLabel willkommen;
-
+	JPanel menu = new JPanel();
 	JPanel benutzerHin = new JPanel();
-	JLabel benutzer;
 	JPanel benutzer1 = new JPanel();
 	JPanel benutzer2 = new JPanel();
+	JPanel aufgabenHin = new JPanel();
+	JPanel kalendarHin = new JPanel();
+	MonthPanel kalender;
+
+	JButton benutzerMB = new JButton();
+	JButton aufgabenMB = new JButton();
+	JButton kalenderMB = new JButton();
 	JButton person1 = new JButton();
 	JButton person2 = new JButton();
 	JButton person3 = new JButton();
 
-	JPanel aufgabenHin = new JPanel();
+	JLabel benutzer;
 	JLabel aufgaben;
-
-	JPanel kalendarHin = new JPanel();
-	MonthPanel kalendar;
+	
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	int windowHeight = (int) Math.ceil(0.8 * screenSize.getHeight());
+	int windowWidth = (int) Math.ceil(1.2 * windowHeight);
 
 	public PutzplanGUI() {
+		
+		// putzplanGUI
 		setTitle("Putzplan");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1200, 950);
-		setResizable(false);
+		//setSize(windowWidth, windowHeight);
+		//setResizable(false);
+		
+		// layout
+		BoxLayout layout = new BoxLayout(hintergrund, BoxLayout.X_AXIS);
+		//layout.minimumLayoutSize(this);	
 
-		add(hintergrund);
-
-		hintergrund.setLayout(null);
+		// hintergrund
+		hintergrund.setLayout(layout);
 		hintergrund.add(menu);
 		hintergrund.add(haupt);
-
 		Insets insets = hintergrund.getInsets();
+		hintergrund.setPreferredSize(new Dimension(windowWidth, windowHeight));
+		add(hintergrund);
 
-		// Menuefaeche
-		menu.setBounds(0 + insets.left, 0 + insets.top, 200, 900);
-
-		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
-		benutzerMB.setIcon(new ImageIcon("bilder\\icons\\menu_benutzer3.png"));
-		benutzerMB.setMargin(new Insets(0, 0, 0, 0));
-		menu.add(benutzerMB);
+		// menu
+		int menuWidth = (int) (windowWidth/5.6);
+		menu.setSize(menuWidth, windowHeight);
+		//menu.setBounds(insets.left, insets.top, (int) (windowWidth/6), windowHeight);
+		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));		
+		
+		benutzerMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_benutzer3.png"), menuWidth));
+		benutzerMB.setMargin(new Insets(-4, 0, -4, 0));
 		benutzerMB.addActionListener(this);
+		benutzerMB.setBorderPainted(false);
+		benutzerMB.setContentAreaFilled(false);
+		menu.add(benutzerMB);
 
-		aufgabenMB.setIcon(new ImageIcon("bilder\\icons\\menu_aufgaben3.png"));
-		aufgabenMB.setMargin(new Insets(0, 0, 0, 0));
-		menu.add(aufgabenMB);
+		aufgabenMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_aufgaben3.png"), menuWidth));
+		aufgabenMB.setMargin(new Insets(-4, 0, -4, 0));
 		aufgabenMB.addActionListener(this);
+		aufgabenMB.setBorderPainted(false);
+		aufgabenMB.setContentAreaFilled(false);
+		menu.add(aufgabenMB);
+		
+		kalenderMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_kalendar3.png"), menuWidth));
+		kalenderMB.setMargin(new Insets(-4, 0, -4, 0));
+		kalenderMB.addActionListener(this);
+		kalenderMB.setBorderPainted(false);
+		kalenderMB.setContentAreaFilled(false);
+		menu.add(kalenderMB);
 
-		kalendarMB.setIcon(new ImageIcon("bilder\\icons\\menu_kalendar3.png"));
-		kalendarMB.setMargin(new Insets(0, 0, 0, 0));
-		menu.add(kalendarMB);
-		kalendarMB.addActionListener(this);
-
-		haupt.setBounds(200 + insets.left, 0 + insets.top, 1000, 900);
+		// haupt
+		int hauptWidth = windowWidth - (int) (windowWidth/5.6);
+		haupt.setPreferredSize(new Dimension(hauptWidth, windowHeight));
+		//haupt.setBounds((int) (windowWidth/6), 0, hauptWidth, windowHeight-39);
 		// haupt.setLayout(null);
 		// haupt.setBackground(Color.white);
-
-		// Hauptflaeche:Kalendar-Teil
+		// Hauptflaeche:Kalender-Teil
 		// ImageIcon kalendarH = new
 		// ImageIcon("bilder\\icons\\Hintergruende_kalendar.png");
-		kalendar = new MonthPanel(8, 2020);
-		haupt.add(kalendar);
-		// kalendar.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
-		kalendar.setVisible(true);
 
 		/**
 		 * Hauptfläche:Willkommen/Start-Teil ImageIcon start= new
@@ -82,8 +92,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		 * JLabel(start); haupt.add(willkommen); willkommen.setVisible(true);
 		 */
 
-		// Hauptflaeche:Benutzer-Teil
-
+		// haupt: benutzer
 		haupt.add(benutzerHin);
 		// benutzerHin.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
 		benutzerHin.setLayout(new BoxLayout(benutzerHin, BoxLayout.X_AXIS));
@@ -93,22 +102,26 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		// benutzerHin.add(benutzer);
 		// benutzer.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
 
-		person1.setIcon(new ImageIcon("bilder\\icons\\plus.png"));
+		person1.setIcon(resize(new ImageIcon("bilder\\icons\\plus.png"), hauptWidth/3));
 		person1.setMargin(new Insets(0, 0, 0, 0));
-		benutzerHin.add(person1);
-		// person1.setBounds(0 + insets.left, 333 + insets.top, 333, 900);
+		person1.setBorderPainted(false);
+		person1.setContentAreaFilled(false);
 		person1.addActionListener(this);
-
-		// person1.setVisible(false);
-		person2.setIcon(new ImageIcon("bilder\\icons\\plus.png"));
+		benutzerHin.add(person1);
+		
+		person2.setIcon(resize(new ImageIcon("bilder\\icons\\plus.png"), hauptWidth/3));
 		person2.setMargin(new Insets(0, 0, 0, 0));
-		benutzerHin.add(person2);
+		person2.setBorderPainted(false);
+		person2.setContentAreaFilled(false);
 		person2.addActionListener(this);
+		benutzerHin.add(person2);
 
-		person3.setIcon(new ImageIcon("bilder\\icons\\plus.png"));
+		person3.setIcon(resize(new ImageIcon("bilder\\icons\\plus.png"), hauptWidth/3));
 		person3.setMargin(new Insets(0, 0, 0, 0));
-		benutzerHin.add(person3);
+		person3.setBorderPainted(false);
+		person3.setContentAreaFilled(false);
 		person3.addActionListener(this);
+		benutzerHin.add(person3);
 
 		benutzerHin.setVisible(false);
 
@@ -121,13 +134,25 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		 * benutzer1.setVisible(false);
 		 */
 
-		// Hauptflaeche:Aufgaben-Teil
+		// haupt: aufgaben
 		ImageIcon aufgabenH = new ImageIcon("bilder\\icons\\Hintergruende_aufgaben.png");
 		aufgaben = new JLabel(aufgabenH);
 		haupt.add(aufgaben);
 		// aufgaben.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
 		aufgaben.setVisible(false);
 
+		// haupt: kalender
+		kalender = new MonthPanel(9, 2020);
+		haupt.add(kalender);
+		// kalender.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
+		kalender.setVisible(true);
+		
+		System.out.println("totalWidth: " + windowWidth);
+		System.out.println("menuWidth: " + menuWidth);
+		System.out.println("hauptWidth: " + hauptWidth);
+		System.out.println();
+		System.out.println("height: " + windowHeight);
+		pack();
 	}
 
 	public static void main(String[] args) {
@@ -135,6 +160,13 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		PutzplanGUI p = new PutzplanGUI();
 
 		p.setVisible(true);
+	}
+	
+	public ImageIcon resize(ImageIcon i, int width) {
+		Image image = i.getImage();
+		int newH = (int) Math.round(i.getIconHeight() * ((float) width / i.getIconWidth()));
+		i = new ImageIcon(image.getScaledInstance(width, newH, java.awt.Image.SCALE_SMOOTH));
+		return i;
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -147,20 +179,20 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			// person1.setVisible(true);
 
 			aufgaben.setVisible(false);
-			kalendar.setVisible(false);
+			kalender.setVisible(false);
 		} else if (ae.getSource() == this.aufgabenMB) {
 			// willkommen.setVisible(false);
 			benutzerHin.setVisible(false);
 			benutzer1.setVisible(false);
 			aufgaben.setVisible(true);
-			kalendar.setVisible(false);
-		} else if (ae.getSource() == this.kalendarMB) {
+			kalender.setVisible(false);
+		} else if (ae.getSource() == this.kalenderMB) {
 			// willkommen.setVisible(false);
 			benutzerHin.setVisible(false);
 			benutzer1.setVisible(false);
 			aufgaben.setVisible(false);
-			kalendar.setVisible(true);
-			haupt.setBackground(new Color(22,35,54));
+			kalender.setVisible(true);
+			haupt.setBackground(new Color(22, 35, 54));
 		} else if (ae.getSource() == this.person1) {
 
 		} else if (ae.getSource() == this.person2) {
@@ -171,8 +203,8 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 
 	}
 
-	//Kalender
-	class MonthPanel extends JPanel {
+	// Kalender
+	static class MonthPanel extends JPanel {
 		int month;
 		int year;
 		protected String[] monthNames = { "January", "February", "March", "April", "May", "June", "July", "August",
@@ -181,7 +213,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		protected String[] dayNames = { "S", "M", "T", "W", "T", "F", "S" };
 
 		public MonthPanel(int month, int year) {
-			this.month = month;
+			this.month = month-1;
 			this.year = year;
 			JPanel monthPanel = new JPanel(true);
 			monthPanel.setLayout(new BorderLayout());
