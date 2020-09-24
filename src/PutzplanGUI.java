@@ -86,6 +86,12 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		// ImageIcon kalendarH = new
 		// ImageIcon("bilder\\icons\\Hintergruende_kalendar.png");
 
+		kalendar = new MonthPanel(8, 2020);
+		haupt.add(kalendar);
+		haupt.setBackground(new Color(22,35,54));
+		// kalendar.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
+		kalendar.setVisible(true);
+
 		/**
 		 * Hauptfläche:Willkommen/Start-Teil ImageIcon start= new
 		 * ImageIcon("bilder\\icons\\Hintergruende_willkommen.png"); willkommen = new
@@ -94,7 +100,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 
 		// haupt: benutzer
 		haupt.add(benutzerHin);
-		// benutzerHin.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
+		benutzerHin.setBounds(0 + insets.left, 333 + insets.top, 1000, 333);
 		benutzerHin.setLayout(new BoxLayout(benutzerHin, BoxLayout.X_AXIS));
 		// ImageIcon benutzerH = new
 		// ImageIcon("bilder\\icons\\Hintergruende_benutzer.png");
@@ -137,9 +143,12 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		// haupt: aufgaben
 		ImageIcon aufgabenH = new ImageIcon("bilder\\icons\\Hintergruende_aufgaben.png");
 		aufgaben = new JLabel(aufgabenH);
+		// Hauptflaeche:Aufgaben-Teil
+		//ImageIcon aufgabenH = new ImageIcon("bilder\\icons\\Hintergruende_aufgaben.png");
+		aufgaben = new JLabel();
 		haupt.add(aufgaben);
 		// aufgaben.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
-		aufgaben.setVisible(false);
+		//aufgaben.setVisible(false);
 
 		// haupt: kalender
 		kalender = new MonthPanel(9, 2020);
@@ -177,22 +186,17 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			// willkommen.setVisible(false);
 			benutzerHin.setVisible(true);
 			// person1.setVisible(true);
-
 			aufgaben.setVisible(false);
 			kalender.setVisible(false);
+			haupt.setBackground(new Color(1,83,82));
 		} else if (ae.getSource() == this.aufgabenMB) {
 			// willkommen.setVisible(false);
 			benutzerHin.setVisible(false);
 			benutzer1.setVisible(false);
 			aufgaben.setVisible(true);
-			kalender.setVisible(false);
 		} else if (ae.getSource() == this.kalenderMB) {
-			// willkommen.setVisible(false);
-			benutzerHin.setVisible(false);
-			benutzer1.setVisible(false);
-			aufgaben.setVisible(false);
-			kalender.setVisible(true);
-			haupt.setBackground(new Color(22, 35, 54));
+			kalendar.setVisible(false);
+			haupt.setBackground(new Color(99,0,0));
 		} else if (ae.getSource() == this.person1) {
 
 		} else if (ae.getSource() == this.person2) {
