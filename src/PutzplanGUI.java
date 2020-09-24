@@ -73,6 +73,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		// ImageIcon("bilder\\icons\\Hintergruende_kalendar.png");
 		kalendar = new MonthPanel(8, 2020);
 		haupt.add(kalendar);
+		haupt.setBackground(new Color(22,35,54));
 		// kalendar.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
 		kalendar.setVisible(true);
 
@@ -85,7 +86,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		// Hauptflaeche:Benutzer-Teil
 
 		haupt.add(benutzerHin);
-		// benutzerHin.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
+		benutzerHin.setBounds(0 + insets.left, 333 + insets.top, 1000, 333);
 		benutzerHin.setLayout(new BoxLayout(benutzerHin, BoxLayout.X_AXIS));
 		// ImageIcon benutzerH = new
 		// ImageIcon("bilder\\icons\\Hintergruende_benutzer.png");
@@ -122,11 +123,11 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		 */
 
 		// Hauptflaeche:Aufgaben-Teil
-		ImageIcon aufgabenH = new ImageIcon("bilder\\icons\\Hintergruende_aufgaben.png");
-		aufgaben = new JLabel(aufgabenH);
+		//ImageIcon aufgabenH = new ImageIcon("bilder\\icons\\Hintergruende_aufgaben.png");
+		aufgaben = new JLabel();
 		haupt.add(aufgaben);
 		// aufgaben.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
-		aufgaben.setVisible(false);
+		//aufgaben.setVisible(false);
 
 	}
 
@@ -148,12 +149,14 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 
 			aufgaben.setVisible(false);
 			kalendar.setVisible(false);
+			haupt.setBackground(new Color(1,83,82));
 		} else if (ae.getSource() == this.aufgabenMB) {
 			// willkommen.setVisible(false);
 			benutzerHin.setVisible(false);
 			benutzer1.setVisible(false);
 			aufgaben.setVisible(true);
 			kalendar.setVisible(false);
+			haupt.setBackground(new Color(99,0,0));
 		} else if (ae.getSource() == this.kalendarMB) {
 			// willkommen.setVisible(false);
 			benutzerHin.setVisible(false);
