@@ -8,10 +8,10 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	JPanel hintergrund = new JPanel();
 	JPanel haupt = new JPanel();
 	JPanel menu = new JPanel();
-	JPanel benutzerHin = new JPanel();
+	JPanel benutzer = new JPanel();
 	JPanel benutzer1 = new JPanel();
 	JPanel benutzer2 = new JPanel();
-	JPanel aufgabenHin = new JPanel();
+	JPanel aufgaben = new JPanel();
 	JPanel kalendarHin = new JPanel();
 	MonthPanel kalender;
 
@@ -21,9 +21,10 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	JButton person1 = new JButton();
 	JButton person2 = new JButton();
 	JButton person3 = new JButton();
+	JButton aufgabenplus = new JButton();
 
-	JLabel benutzer;
-	JLabel aufgaben;
+	//JLabel benutzer;
+	JLabel aufgabenUeberschrift;
 	
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	int windowHeight = (int) Math.ceil(0.8 * screenSize.getHeight());
@@ -79,57 +80,40 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		// haupt
 		int hauptWidth = windowWidth - (int) (windowWidth/5.6);
 		haupt.setPreferredSize(new Dimension(hauptWidth, windowHeight));
-		//haupt.setBounds((int) (windowWidth/6), 0, hauptWidth, windowHeight-39);
-		// haupt.setLayout(null);
-		// haupt.setBackground(Color.white);
-		// Hauptflaeche:Kalender-Teil
-		// ImageIcon kalendarH = new
-		// ImageIcon("bilder\\icons\\Hintergruende_kalendar.png");
-
-		kalender = new MonthPanel(8, 2020);
-		haupt.add(kalender);
+		/**kalender = new MonthPanel(8, 2020);
+		haupt.add(kalender);*/
 		haupt.setBackground(new Color(22,35,54));
-		// kalender.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
-		kalender.setVisible(true);
+		//kalender.setVisible(true);
 
-		/**
-		 * Hauptfläche:Willkommen/Start-Teil ImageIcon start= new
-		 * ImageIcon("bilder\\icons\\Hintergruende_willkommen.png"); willkommen = new
-		 * JLabel(start); haupt.add(willkommen); willkommen.setVisible(true);
-		 */
 
 		// haupt: benutzer
-		haupt.add(benutzerHin);
-		benutzerHin.setBounds(0 + insets.left, 333 + insets.top, 1000, 333);
-		benutzerHin.setLayout(new BoxLayout(benutzerHin, BoxLayout.X_AXIS));
-		// ImageIcon benutzerH = new
-		// ImageIcon("bilder\\icons\\Hintergruende_benutzer.png");
-		// benutzer = new JLabel(benutzerH);
-		// benutzerHin.add(benutzer);
-		// benutzer.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
+		haupt.add(benutzer);
+		benutzer.setBounds(0 + insets.left, 333 + insets.top, 1000, 333);
+		benutzer.setLayout(new BoxLayout(benutzer, BoxLayout.X_AXIS));
+		
 
 		person1.setIcon(resize(new ImageIcon("bilder\\icons\\plus.png"), hauptWidth/3));
 		person1.setMargin(new Insets(0, 0, 0, 0));
 		person1.setBorderPainted(false);
 		person1.setContentAreaFilled(false);
 		person1.addActionListener(this);
-		benutzerHin.add(person1);
+		benutzer.add(person1);
 		
 		person2.setIcon(resize(new ImageIcon("bilder\\icons\\plus.png"), hauptWidth/3));
 		person2.setMargin(new Insets(0, 0, 0, 0));
 		person2.setBorderPainted(false);
 		person2.setContentAreaFilled(false);
 		person2.addActionListener(this);
-		benutzerHin.add(person2);
+		benutzer.add(person2);
 
 		person3.setIcon(resize(new ImageIcon("bilder\\icons\\plus.png"), hauptWidth/3));
 		person3.setMargin(new Insets(0, 0, 0, 0));
 		person3.setBorderPainted(false);
 		person3.setContentAreaFilled(false);
 		person3.addActionListener(this);
-		benutzerHin.add(person3);
+		benutzer.add(person3);
 
-		benutzerHin.setVisible(false);
+		benutzer.setVisible(false);
 
 		/**
 		 * haupt.add(benutzer1); benutzer1.setBounds(0 + insets.left, 0 + insets.top,
@@ -141,14 +125,34 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		 */
 
 		// haupt: aufgaben
-		ImageIcon aufgabenH = new ImageIcon("bilder\\icons\\Hintergruende_aufgaben.png");
-		aufgaben = new JLabel(aufgabenH);
-		// Hauptflaeche:Aufgaben-Teil
-		//ImageIcon aufgabenH = new ImageIcon("bilder\\icons\\Hintergruende_aufgaben.png");
-		aufgaben = new JLabel();
+		aufgaben.setBackground(new Color(99,0,0));
 		haupt.add(aufgaben);
-		// aufgaben.setBounds(0 + insets.left, 0 + insets.top, 1000, 900);
-		//aufgaben.setVisible(false);
+		aufgaben.setLayout(new BorderLayout());
+		aufgabenUeberschrift = new JLabel("Aufgaben:");
+		aufgabenUeberschrift.setForeground(Color.white);
+		aufgabenUeberschrift.setFont(aufgabenUeberschrift.getFont().deriveFont(40f));
+		aufgabenUeberschrift.setPreferredSize(new Dimension(200, 100));
+		aufgaben.add(aufgabenUeberschrift, BorderLayout.PAGE_START);
+		
+		//hier mit AufgabeClasse verbinden
+		String aufgabenListe[] = {"hier", "ist", "die", "verbindung"};
+		JList aufgabenauflistung = new JList(aufgabenListe);
+		aufgabenauflistung.setBackground(new Color(99,0,0));
+		aufgabenauflistung.setForeground(Color.white);
+		aufgabenauflistung.setFont(aufgabenauflistung.getFont().deriveFont(20f));
+		aufgabenauflistung.setPreferredSize(new Dimension(400, 400));
+		aufgaben.add(aufgabenauflistung, BorderLayout.CENTER);
+		
+		//aufgabenplus.setPreferredSize(new Dimension(200, 100));
+		aufgabenplus.setIcon(resize(new ImageIcon("bilder\\icons\\plusrot.png"), hauptWidth/3));
+		aufgabenplus.setMargin(new Insets(0, 0, 0, 0));
+		aufgabenplus.setBorderPainted(false);
+		aufgabenplus.setContentAreaFilled(false);
+		aufgabenplus.addActionListener(this);
+		
+		aufgaben.add(aufgabenplus, BorderLayout.LINE_END);
+		aufgaben.setVisible(false);
+		
 
 		// haupt: kalender
 		kalender = new MonthPanel(9, 2020);
@@ -183,25 +187,28 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		// Buttons abgeglichen. Wenn die Quelle des ActionEvents einer
 		// der Buttons ist, werden die jeweiligen Sachen ausgefüht
 		if (ae.getSource() == this.benutzerMB) {
-			// willkommen.setVisible(false);
-			benutzerHin.setVisible(true);
-			// person1.setVisible(true);
+			benutzer.setVisible(true);
 			aufgaben.setVisible(false);
 			kalender.setVisible(false);
 			haupt.setBackground(new Color(1,83,82));
 		} else if (ae.getSource() == this.aufgabenMB) {
-			// willkommen.setVisible(false);
-			benutzerHin.setVisible(false);
+			benutzer.setVisible(false);
 			benutzer1.setVisible(false);
 			aufgaben.setVisible(true);
-		} else if (ae.getSource() == this.kalenderMB) {
 			kalender.setVisible(false);
 			haupt.setBackground(new Color(99,0,0));
+		} else if (ae.getSource() == this.kalenderMB) {
+			benutzer.setVisible(false);
+			aufgaben.setVisible(false);
+			kalender.setVisible(true);
+			haupt.setBackground(new Color(22,35,54));
 		} else if (ae.getSource() == this.person1) {
 
 		} else if (ae.getSource() == this.person2) {
 
 		} else if (ae.getSource() == this.person3) {
+
+		}else if (ae.getSource() == this.aufgabenplus) {
 
 		}
 
