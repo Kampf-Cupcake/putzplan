@@ -6,6 +6,8 @@ import java.util.Calendar;
 
 public class PutzplanGUI extends JFrame implements ActionListener {
 
+	private static PutzplanGUI instanz;
+
 	JPanel hintergrund = new JPanel();
 	JPanel haupt = new JPanel();
 	JPanel menu = new JPanel();
@@ -30,6 +32,8 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	int windowHeight = (int) Math.ceil(0.8 * screenSize.getHeight());
 	int windowWidth = (int) Math.ceil(1.2 * windowHeight);
+	int menuWidth = (int) (windowWidth / 5.6);
+	int hauptWidth = windowWidth - menuWidth;
 
 	public PutzplanGUI() {
 
@@ -52,7 +56,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		add(hintergrund);
 
 		// menu
-		int menuWidth = (int) (windowWidth / 5.6);
 		menu.setPreferredSize(new Dimension(menuWidth, windowHeight));
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 
@@ -78,7 +81,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		menu.add(kalenderMB);
 
 		// haupt
-		int hauptWidth = windowWidth - menuWidth;
 		haupt.setPreferredSize(new Dimension(hauptWidth, windowHeight));
 		haupt.setBackground(new Color(22, 35, 54));
 
@@ -122,16 +124,16 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgaben.add(aufgabenUeberschrift, BorderLayout.PAGE_START);
 
 //-> hier mit wirklich richtig mit den neuen Aufgaben?
-		//new Aufgabe("a", 3, 3);
-		new Aufgabe ("Bad putzen", 5, 1);
-		new Aufgabe ("Blumen giessen", 1, 3);
-		new Aufgabe ("Boden wischen", 3, 1);
-		new Aufgabe ("Fenster putzen", 3, 1);
-		new Aufgabe ("Küche putzen", 4, 1);
-		new Aufgabe ("Müll rausbringen", 1, 7);
-		new Aufgabe ("Spülmaschine", 2, 3);
-		new Aufgabe ("Staubsaugen", 1, 4);
-		new Aufgabe ("Treppenhaus fegen", 2, 1);
+		// new Aufgabe("a", 3, 3);
+		new Aufgabe("Bad putzen", 5, 1);
+		new Aufgabe("Blumen giessen", 1, 3);
+		new Aufgabe("Boden wischen", 3, 1);
+		new Aufgabe("Fenster putzen", 3, 1);
+		new Aufgabe("Küche putzen", 4, 1);
+		new Aufgabe("Müll rausbringen", 1, 7);
+		new Aufgabe("Spülmaschine", 2, 3);
+		new Aufgabe("Staubsaugen", 1, 4);
+		new Aufgabe("Treppenhaus fegen", 2, 1);
 		JList aufgabenauflistung = new JList(Aufgabenliste.getInstanz().arrayAusgeben());
 		aufgabenauflistung.setBackground(new Color(99, 0, 0));
 		aufgabenauflistung.setForeground(Color.white);
@@ -159,9 +161,21 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 
-		PutzplanGUI p = new PutzplanGUI();
+		getInstanz();
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		p.setVisible(true);
+		getInstanz().setVisible(true);
+	}
+
+	public static PutzplanGUI getInstanz() {
+		if (instanz == null) {
+			instanz = new PutzplanGUI();
+		}
+		return instanz;
 	}
 
 	public ImageIcon resize(ImageIcon i, int width) {
@@ -169,6 +183,26 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		int newH = (int) Math.round(i.getIconHeight() * ((float) width / i.getIconWidth()));
 		i = new ImageIcon(image.getScaledInstance(width, newH, java.awt.Image.SCALE_SMOOTH));
 		return i;
+	}
+
+	public void updateBenutzer() {
+		System.out.println("Aufruf updateBenutzer");
+		for (int i = 0; i < 3; i++) {
+			if (Benutzer.getAlleBenutzer().size() > i) {
+				switch (i) {
+				case 0:
+					System.out.println(Benutzer.getAlleBenutzer().get(0).getBild());
+					person1.setIcon(resize(new ImageIcon(Benutzer.getAlleBenutzer().get(0).getBild()), hauptWidth / 3));
+					break;
+				case 1:
+					person2.setIcon(resize(new ImageIcon(Benutzer.getAlleBenutzer().get(1).getBild()), hauptWidth / 3));
+					break;
+				case 2:
+					person3.setIcon(resize(new ImageIcon(Benutzer.getAlleBenutzer().get(2).getBild()), hauptWidth / 3));
+					break;
+				}
+			}
+		}
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -193,11 +227,13 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			haupt.setBackground(new Color(22, 35, 54));
 		} else if (ae.getSource() == this.person1) {
 			NeuerBenutzerFrame.getInstanz();
-			NeuerBenutzerFrame.getInstanz().setVisible(true);;
+			NeuerBenutzerFrame.getInstanz().setVisible(true);
 		} else if (ae.getSource() == this.person2) {
-
+			NeuerBenutzerFrame.getInstanz();
+			NeuerBenutzerFrame.getInstanz().setVisible(true);
 		} else if (ae.getSource() == this.person3) {
-
+			NeuerBenutzerFrame.getInstanz();
+			NeuerBenutzerFrame.getInstanz().setVisible(true);
 		} else if (ae.getSource() == this.aufgabenplus) {
 
 		}
