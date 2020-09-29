@@ -1,8 +1,10 @@
+import java.util.LinkedList;
 
 public class Benutzer {
 
 	String name;
 	String bild; // muss noch angepasst werden
+	LinkedList<Aufgabe> aufgabenliste = new LinkedList<Aufgabe>();
 
 	public Benutzer(String n, String b) {
 		this.name = n;
@@ -13,11 +15,11 @@ public class Benutzer {
 		return name;
 	}
 
-	public void neuErstellenB(String n, String b) {
-
-	}
-
 	public void bearbeitenB(String n, String b) {
 
+	}
+	
+	public void aufgabeGeben(Aufgabe a) {
+		this.aufgabenliste.add(a);
 	}
 }

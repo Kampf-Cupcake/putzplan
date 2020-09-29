@@ -13,15 +13,13 @@ public class Aufgabe {
 	}
 
 	public String toString() {
-		return "Die Aufgabe " + name + " hat die Schwierigkeitsstufe " + schwierigkeit
-				+ " und soll so oft gemacht werden " + haeufigkeit;
+		return this.name + " (" + this.schwierigkeit + ") " + this.haeufigkeit;
 	}
 
-	public void neuErstellenA(String n, int s, double h) {
-
-	}
-
-	public void bearbeitenA(String n, int s, double h) {
-
+	public void bearbeiten(String n, int s, double h) {
+		//Aufgabenliste.getInstanz().entfernen(this);
+		this.name = n;
+		this.schwierigkeit = s;
+		this.haeufigkeit = h;
 	}
 }

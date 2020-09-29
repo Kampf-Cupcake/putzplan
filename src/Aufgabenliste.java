@@ -4,7 +4,7 @@ import java.util.List;
 public class Aufgabenliste {
 
 	private static Aufgabenliste instanz;
-	private List<Aufgabe> aufgaben = new LinkedList<Aufgabe>();
+	private static List<Aufgabe> aufgaben = new LinkedList<Aufgabe>();
 
 	public static Aufgabenliste getInstanz() {
 		if (instanz == null) {
@@ -17,8 +17,23 @@ public class Aufgabenliste {
 		aufgaben.add(a);
 	}
 
+	public void entfernen(Aufgabe a) {
+		for (Aufgabe i : aufgaben) {
+			if (i == a) {
+				aufgaben.remove(i);
+				break;
+			}
+		}
+	}
+
 	public List<Aufgabe> ausgeben() {
 		return this.aufgaben;
+	}
+
+	public Aufgabe[] arrayAusgeben() {
+		Aufgabe[] a = new Aufgabe[aufgaben.size()];
+		a = aufgaben.toArray(a);
+		return a;
 	}
 
 	public String toString() {
