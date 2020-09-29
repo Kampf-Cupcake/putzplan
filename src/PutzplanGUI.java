@@ -121,8 +121,17 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgabenUeberschrift.setPreferredSize(new Dimension(200, 100));
 		aufgaben.add(aufgabenUeberschrift, BorderLayout.PAGE_START);
 
-		// hier mit AufgabeClasse verbinden
-		new Aufgabe("a", 3, 3);
+//-> hier mit wirklich richtig mit den neuen Aufgaben?
+		//new Aufgabe("a", 3, 3);
+		new Aufgabe ("Bad putzen", 5, 1);
+		new Aufgabe ("Blumen giessen", 1, 3);
+		new Aufgabe ("Boden wischen", 3, 1);
+		new Aufgabe ("Fenster putzen", 3, 1);
+		new Aufgabe ("Küche putzen", 4, 1);
+		new Aufgabe ("Müll rausbringen", 1, 7);
+		new Aufgabe ("Spülmaschine", 2, 3);
+		new Aufgabe ("Staubsaugen", 1, 4);
+		new Aufgabe ("Treppenhaus fegen", 2, 1);
 		JList aufgabenauflistung = new JList(Aufgabenliste.getInstanz().arrayAusgeben());
 		aufgabenauflistung.setBackground(new Color(99, 0, 0));
 		aufgabenauflistung.setForeground(Color.white);
