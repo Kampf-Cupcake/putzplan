@@ -25,7 +25,6 @@ public class NeuerBenutzerFrame extends JFrame {
 
 	public NeuerBenutzerFrame() {
 		setTitle("Benutzer erstellen");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 
 		GridLayout layout = new GridLayout(3, 0);

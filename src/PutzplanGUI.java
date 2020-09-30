@@ -123,7 +123,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgabenUeberschrift.setPreferredSize(new Dimension(200, 100));
 		aufgaben.add(aufgabenUeberschrift, BorderLayout.PAGE_START);
 
-//-> hier mit wirklich richtig mit den neuen Aufgaben?
+		// -> hier mit wirklich richtig mit den neuen Aufgaben?
 		// new Aufgabe("a", 3, 3);
 		new Aufgabe("Bad putzen", 5, 1);
 		new Aufgabe("Blumen giessen", 1, 3);
@@ -204,6 +204,10 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			}
 		}
 	}
+	
+	public void updateAufgaben() {
+		
+	}
 
 	public void actionPerformed(ActionEvent ae) {
 		// Die Quelle wird mit getSource() abgefragt und mit den
@@ -225,17 +229,10 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			aufgaben.setVisible(false);
 			kalender.setVisible(true);
 			haupt.setBackground(new Color(22, 35, 54));
-		} else if (ae.getSource() == this.person1) {
-			NeuerBenutzerFrame.getInstanz();
-			NeuerBenutzerFrame.getInstanz().setVisible(true);
-		} else if (ae.getSource() == this.person2) {
-			NeuerBenutzerFrame.getInstanz();
-			NeuerBenutzerFrame.getInstanz().setVisible(true);
-		} else if (ae.getSource() == this.person3) {
-			NeuerBenutzerFrame.getInstanz();
+		} else if (ae.getSource() == this.person1 || ae.getSource() ==  this.person2 || ae.getSource() ==  this.person3) {
 			NeuerBenutzerFrame.getInstanz().setVisible(true);
 		} else if (ae.getSource() == this.aufgabenplus) {
-
+			NeueAufgabeFrame.getInstanz().setVisible(true);
 		}
 	}
 
