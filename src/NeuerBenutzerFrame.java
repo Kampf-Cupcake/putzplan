@@ -45,8 +45,6 @@ public class NeuerBenutzerFrame extends JFrame {
 					nameField.setText("");
 				}
 			}
-
-			@Override
 			public void focusLost(FocusEvent e) {
 				if (nameField.getText().isEmpty()) {
 					nameField.setForeground(Color.GRAY);
