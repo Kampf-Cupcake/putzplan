@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-// TODO: click auf existierenden Benutzer -> Benutzer bearbeiten
+// TODO: click auf existierenden Benutzer -> Benutzer bearbeiten, Vererbung: abstrakte neuerFrame Klasse
 public class NeuerBenutzerFrame extends JFrame {
 	private static NeuerBenutzerFrame instanz;
 

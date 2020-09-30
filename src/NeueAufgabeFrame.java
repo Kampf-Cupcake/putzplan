@@ -53,12 +53,18 @@ public class NeueAufgabeFrame extends JFrame {
 	private void confirmAufgabe() {
 		if (!(aufgabeField.getText().equals("Aufgabe")) && !(schwierigkeitField.getText().equals("Schwierigkeit (1-5)"))
 				&& !(haufigkeitField.getText().equals("Häufigkeit (pro Monat)"))) {
-			System.out.println("neue Aufgabe");
-			// new Aufgabe(aufgabeField.getText(), schwierigkeitField.getText(),
-			// haufigkeittextjjjjField.getText());
-			setVisible(false);
-			dispose();
-			PutzplanGUI.getInstanz().updateAufgaben();
+			int s = 0;
+			int h = 0;
+			try {
+				s = Integer.parseInt(schwierigkeitField.getText().trim());
+				h = Integer.parseInt(haufigkeitField.getText().trim());
+				new Aufgabe(aufgabeField.getText(), s, h);
+				setVisible(false);
+				dispose();
+				PutzplanGUI.getInstanz().updateAufgaben();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -83,18 +89,19 @@ public class NeueAufgabeFrame extends JFrame {
 		if (field != aufgabeField) {
 			field.addKeyListener(new KeyAdapter() {
 				public void keyPressed(KeyEvent ke) {
-					if ((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') || ke.getKeyChar() == KeyEvent.VK_BACK_SPACE || ke.getKeyChar() == KeyEvent.VK_DELETE) {
+					if ((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') || ke.getKeyChar() == KeyEvent.VK_BACK_SPACE
+							|| ke.getKeyChar() == KeyEvent.VK_DELETE) {
 						field.setEditable(true);
 						/*
-						if(!(aufgabeField.getText().equals("Aufgabe"))
-								&& !(schwierigkeitField.getText().equals("Schwierigkeit (1-5)"))
-								&& !(haufigkeitField.getText().equals("Häufigkeit (pro Monat)"))
-								&& !(aufgabeField.getText().equals(""))
-								&& !(schwierigkeitField.getText().equals(""))
-								&& !(haufigkeitField.getText().equals(""))) {
-							confirmBtn.setEnabled(true);
-							
-						}*/
+						 * if(!(aufgabeField.getText().equals("Aufgabe")) &&
+						 * !(schwierigkeitField.getText().equals("Schwierigkeit (1-5)")) &&
+						 * !(haufigkeitField.getText().equals("Häufigkeit (pro Monat)")) &&
+						 * !(aufgabeField.getText().equals("")) &&
+						 * !(schwierigkeitField.getText().equals("")) &&
+						 * !(haufigkeitField.getText().equals(""))) { confirmBtn.setEnabled(true);
+						 * 
+						 * }
+						 */
 					} else {
 						field.setEditable(false);
 					}
