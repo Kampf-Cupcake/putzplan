@@ -20,7 +20,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 //	JPanel benutzer2 = new JPanel();
 	JPanel aufgaben = new JPanel();
 	JPanel kalendarHin = new JPanel();
-	MonthPanel kalender;
+	JPanel kalender = new JPanel();
 
 	JButton benutzerMB = new JButton();
 	JButton aufgabenMB = new JButton();
@@ -30,13 +30,15 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	JButton person3 = new JButton();
 	JButton aufgabenplus = new JButton();
 	JButton generierenBtn = new JButton("Generieren");
+	JButton exportBtn = new JButton("Exportieren");
+	LinkedList<JPanel> aufgabenPanels = new LinkedList<JPanel>();
 
-	String colNames[] = { "Name", "Schwierigkeit", "Haeufigkeit", "Person" };
+	String colNames[] = { "Name", "Schwierigkeit", "Haeufigkeit" };
 	DefaultTableModel tableModel = new DefaultTableModel(colNames, 0);
 	JTable aufgabenauflistung = new JTable(tableModel);
 
 	// JLabel benutzer;
-	//JLabel aufgabenUeberschrift;
+	// JLabel aufgabenUeberschrift;
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	int windowHeight = (int) Math.ceil(0.8 * screenSize.getHeight());
@@ -81,7 +83,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgabenMB.setBorderPainted(false);
 		aufgabenMB.setContentAreaFilled(false);
 		menu.add(aufgabenMB);
-		
+
 		toDoMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_kalendar3.png"), (int) (menuWidth * 1.05f)));
 		toDoMB.setMargin(new Insets(-4, 0, -4, 0));
 		toDoMB.addActionListener(this);
@@ -132,11 +134,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgaben.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, -40));
 		haupt.add(aufgaben);
 		aufgaben.setLayout(new BorderLayout());
-		/**aufgabenUeberschrift = new JLabel("Aufgaben:");
-		aufgabenUeberschrift.setForeground(Color.white);
-		aufgabenUeberschrift.setFont(aufgabenUeberschrift.getFont().deriveFont(40f));
-		aufgabenUeberschrift.setPreferredSize(new Dimension(200, 100));
-		aufgaben.add(aufgabenUeberschrift, BorderLayout.PAGE_START);*/
 
 		new Aufgabe("Bad putzen", 5, 1);
 		new Aufgabe("Blumen giessen", 1, 3);
@@ -159,10 +156,10 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgabenplus.setBorderPainted(false);
 		aufgabenplus.setContentAreaFilled(false);
 		aufgabenplus.addActionListener(this);
-
-		generierenBtn.setMargin(new Insets(0, 0, 0, 0));
-		generierenBtn.addActionListener(this);
-
+		/*
+		 * generierenBtn.setMargin(new Insets(0, 0, 0, 0));
+		 * generierenBtn.addActionListener(this);
+		 */
 		JPanel btns = new JPanel();
 		btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
 		// btns.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -176,8 +173,58 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgaben.setVisible(false);
 
 		// haupt: kalender
-		LocalDate datum = LocalDate.now();
-		kalender = new MonthPanel(datum.getMonthValue(), datum.getYear());
+		kalender.setBackground(new Color(22, 35, 54));
+		LinkedList<JPanel> persPanels = new LinkedList<JPanel>();
+
+		JPanel toDoList = new JPanel();
+		toDoList.setLayout(new BoxLayout(toDoList, BoxLayout.Y_AXIS));
+
+		int i = 0;
+		for (Benutzer b : Benutzer.getAlleBenutzer()) {
+			JPanel personPanel = new JPanel();
+			personPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 200));
+			personPanel.setBackground(new Color(i * 30 + 80, i * 30 + 80, i * 30 + 80));
+			personPanel.setLayout(new GridBagLayout());
+			GridBagConstraints c = new GridBagConstraints();
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridx = 0;
+			c.gridy = 0;
+
+			JLabel bild = new JLabel();
+			bild.setIcon(resize(new ImageIcon(b.getBild()), hauptWidth / 10));
+			personPanel.add(bild);
+
+			JLabel name = new JLabel(b.toString());
+			name.setFont(new Font("Arial", 1, 24));
+			personPanel.add(name);
+
+			System.out.println(i);
+			c.gridy = 0;
+			c.gridy = i;
+			persPanels.add(personPanel);
+			toDoList.add(personPanel);
+
+			JPanel aufgaben = new JPanel();
+			aufgaben.setBackground(Color.red);
+			aufgaben.setLayout(new BoxLayout(aufgaben, BoxLayout.Y_AXIS));
+			aufgabenPanels.add(aufgaben);
+			toDoList.add(aufgaben);
+
+			i++;
+		}
+
+		kalender.add(toDoList, BorderLayout.EAST);
+
+		JPanel toDoBtns = new JPanel();
+		toDoBtns.setLayout(new BoxLayout(toDoBtns, BoxLayout.Y_AXIS));
+
+		generierenBtn.addActionListener(this);
+		toDoBtns.add(generierenBtn);
+
+		exportBtn.addActionListener(this);
+		toDoBtns.add(exportBtn);
+
+		kalender.add(toDoBtns, BorderLayout.WEST);
 		haupt.add(kalender);
 		kalender.setVisible(true);
 
@@ -232,7 +279,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			tableModel.removeRow(0);
 		}
 		for (Aufgabe a : Aufgabe.getAlleAufgaben()) {
-			tableModel.addRow(new Object[] { a.getName(), a.getSchwierigkeit(), a.getHaeufigkeit(), ""});
+			tableModel.addRow(new Object[] { a.getName(), a.getSchwierigkeit(), a.getHaeufigkeit() });
 		}
 	}
 
@@ -262,11 +309,12 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 											* aufgaben.get(aktuelleAufgabe).getHaeufigkeit())
 											+ schwierigk.get(aktuell));
 					Benutzer.getAlleBenutzer().get(aktuell).aufgabeGeben(aufgaben.get(aktuelleAufgabe));
-					tableModel.setValueAt(benutzer.get(aktuell), aktuelleAufgabe, 3);
+					aufgabenPanels.get(aktuell).add(new JLabel(aufgaben.get(aktuelleAufgabe).getName()));
 					break;
 				}
 			}
 		}
+		kalender.revalidate();
 	}
 
 	public void actionPerformed(ActionEvent ae) {
@@ -295,92 +343,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			NeueAufgabeFrame.getInstanz().setVisible(true);
 		} else if (ae.getSource() == this.generierenBtn) {
 			planGenerieren();
-		}
-	}
-
-	// Kalender
-	static class MonthPanel extends JPanel {
-		int month;
-		int year;
-		protected String[] monthNames = { "January", "February", "March", "April", "May", "June", "July", "August",
-				"September", "October", "November", "December" };
-
-		protected String[] dayNames = { "S", "M", "T", "W", "T", "F", "S" };
-
-		public MonthPanel(int month, int year) {
-			this.month = month - 1;
-			this.year = year;
-			JPanel monthPanel = new JPanel(true);
-			monthPanel.setLayout(new BorderLayout());
-			monthPanel.add(createTitleGUI(), BorderLayout.NORTH);
-			monthPanel.add(createDaysGUI(), BorderLayout.SOUTH);
-			this.add(monthPanel);
-		}
-
-		protected JPanel createTitleGUI() {
-			JPanel titlePanel = new JPanel(true);
-			titlePanel.setLayout(new FlowLayout());
-			titlePanel.setBackground(Color.WHITE);
-
-			JLabel label = new JLabel(monthNames[month] + " " + year);
-			label.setForeground(SystemColor.activeCaption);
-			titlePanel.add(label, BorderLayout.CENTER);
-			return titlePanel;
-		}
-
-		protected JPanel createDaysGUI() {
-			JPanel dayPanel = new JPanel(true);
-			dayPanel.setLayout(new GridLayout(0, dayNames.length));
-
-			Calendar today = Calendar.getInstance();
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(Calendar.MONTH, month);
-			calendar.set(Calendar.YEAR, year);
-			calendar.set(Calendar.DAY_OF_MONTH, 1);
-
-			Calendar iterator = (Calendar) calendar.clone();
-			iterator.add(Calendar.DAY_OF_MONTH, -(iterator.get(Calendar.DAY_OF_WEEK) - 1));
-
-			Calendar maximum = (Calendar) calendar.clone();
-			maximum.add(Calendar.MONTH, +1);
-
-			for (int i = 0; i < dayNames.length; i++) {
-				JPanel dPanel = new JPanel(true);
-				dPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				JLabel dLabel = new JLabel(dayNames[i]);
-				dPanel.add(dLabel);
-				dayPanel.add(dPanel);
-			}
-
-			int count = 0;
-			int limit = dayNames.length * 6;
-
-			while (iterator.getTimeInMillis() < maximum.getTimeInMillis()) {
-				int lMonth = iterator.get(Calendar.MONTH);
-				int lYear = iterator.get(Calendar.YEAR);
-
-				JPanel dPanel = new JPanel(true);
-				dPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				JLabel dayLabel = new JLabel();
-
-				if ((lMonth == month) && (lYear == year)) {
-					int lDay = iterator.get(Calendar.DAY_OF_MONTH);
-					dayLabel.setText(Integer.toString(lDay));
-				}
-				dPanel.add(dayLabel);
-				dayPanel.add(dPanel);
-				iterator.add(Calendar.DAY_OF_YEAR, +1);
-				count++;
-			}
-
-			for (int i = count; i < limit; i++) {
-				JPanel dPanel = new JPanel(true);
-				dPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-				dPanel.add(new JLabel());
-				dayPanel.add(dPanel);
-			}
-			return dayPanel;
 		}
 	}
 }
