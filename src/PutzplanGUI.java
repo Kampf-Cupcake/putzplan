@@ -215,7 +215,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			if (Benutzer.getAlleBenutzer().size() > i) {
 				switch (i) {
 				case 0:
-					System.out.println(Benutzer.getAlleBenutzer().get(0).getBild());
 					person1.setIcon(resize(new ImageIcon(Benutzer.getAlleBenutzer().get(0).getBild()), hauptWidth / 3));
 					break;
 				case 1:
@@ -243,46 +242,27 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		Collections.shuffle(benutzer);
 		LinkedList<Aufgabe> aufgaben = Aufgabe.getAlleAufgaben();
 
-		int schwP1 = 0;
-		int schwP2 = 0;
-		int schwP3 = 0;
-
 		LinkedList<Integer> schwierigk = new LinkedList<Integer>();
 
 		for (Benutzer b : benutzer) {
 			schwierigk.add(0);
 		}
-/*
+
 		for (int aktuelleAufgabe = 0; aktuelleAufgabe < aufgaben.size(); aktuelleAufgabe++) {
 			for (int aktuell = 0; aktuell < schwierigk.size(); aktuell++) {
 				boolean istKleinste = true;
 				for (int vergleich = aktuell + 1; vergleich < schwierigk.size(); vergleich++) {
-					if (vergleich > aktuell) {
+					if (schwierigk.get(vergleich) < schwierigk.get(aktuell)) {
 						istKleinste = false;
 						break;
 					}
 				}
 				if (istKleinste) {
-					schwierigk.set(aktuell, aufgaben.get(aktuelleAufgabe).getSchwierigkeit()+schwierigk.get(aktuelleAufgabe));
+					schwierigk.set(aktuell, aufgaben.get(aktuelleAufgabe).getSchwierigkeit() + schwierigk.get(aktuell));
 					Benutzer.getAlleBenutzer().get(aktuell).aufgabeGeben(aufgaben.get(aktuelleAufgabe));
-					tableModel.setValueAt(aktuell+1, aktuelleAufgabe, 3);
+					tableModel.setValueAt(aktuell + 1, aktuelleAufgabe, 3);
+					break;
 				}
-			}
-		}
-*/
-		for (int i = 0; i < aufgaben.size(); i++) {
-			if (schwP1 <= schwP2 && schwP1 <= schwP3) {
-				schwP1 += aufgaben.get(i).getSchwierigkeit();
-				Benutzer.getAlleBenutzer().get(0).aufgabeGeben(aufgaben.get(i));
-				tableModel.setValueAt("P1", i, 3);
-			} else if (schwP2 <= schwP1 && schwP2 <= schwP3) {
-				schwP2 += aufgaben.get(i).getSchwierigkeit();
-				Benutzer.getAlleBenutzer().get(1).aufgabeGeben(aufgaben.get(i));
-				tableModel.setValueAt("P2", i, 3);
-			} else if (schwP3 <= schwP1 && schwP3 <= schwP2) {
-				schwP3 += aufgaben.get(i).getSchwierigkeit();
-				Benutzer.getAlleBenutzer().get(2).aufgabeGeben(aufgaben.get(i));
-				tableModel.setValueAt("P3", i, 3);
 			}
 		}
 	}

@@ -26,7 +26,7 @@ public class Aufgabe {
 	}
 
 	public String toString() {
-		return this.name + this.schwierigkeit;
+		return this.name + ": " + this.schwierigkeit;
 		//return this.name + " (" + this.schwierigkeit + ") " + this.haeufigkeit;
 	}
 	
