@@ -1,11 +1,10 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import javax.swing.*;
 
-// TODO: TextField nur Zahlen
+// TODO: TextField max. 1/2 Zahlen; confirmBtn enabled/disabled; Aufgabe übergeben
 public class NeueAufgabeFrame extends JFrame {
 	private static NeueAufgabeFrame instanz;
 
@@ -18,8 +17,8 @@ public class NeueAufgabeFrame extends JFrame {
 
 	JPanel hintergrund = new JPanel();
 	JTextField aufgabeField = new JTextField("Aufgabe");
-	JTextField schwierigkeitField = new JTextField("Schwierigkeit");
-	JTextField haufigkeitField = new JTextField("Häufigkeit");
+	JTextField schwierigkeitField = new JTextField("Schwierigkeit (1-5)", 1);
+	JTextField haufigkeitField = new JTextField("Häufigkeit (pro Monat)", 2);
 	JButton confirmBtn = new JButton("Bestätigen");
 	String aufgabe;
 	String schwierigkeit;
@@ -27,7 +26,6 @@ public class NeueAufgabeFrame extends JFrame {
 
 	public NeueAufgabeFrame() {
 		setTitle("Aufgabe erstellen");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 
 		GridLayout layout = new GridLayout(4, 0);
@@ -40,10 +38,10 @@ public class NeueAufgabeFrame extends JFrame {
 		add(hintergrund);
 
 		initializeField(aufgabeField, "Aufgabe");
-		initializeField(schwierigkeitField, "Schwierigkeit");
-		initializeField(haufigkeitField, "Häufigkeit");
+		initializeField(schwierigkeitField, "Schwierigkeit (1-5)");
+		initializeField(haufigkeitField, "Häufigkeit (pro Monat)");
 
-		confirmBtn.setEnabled(false);
+		confirmBtn.setEnabled(true);
 		confirmBtn.addActionListener(e -> {
 			confirmAufgabe();
 		});
@@ -53,17 +51,26 @@ public class NeueAufgabeFrame extends JFrame {
 	}
 
 	private void confirmAufgabe() {
-		if (!(aufgabeField.getText().equals("Aufgabe")) && !(schwierigkeitField.getText().equals("Schwierigkeit"))
-				&& !(haufigkeitField.getText().equals("Häufigkeit"))) {
-			//new Aufgabe(aufgabeField.getText(), schwierigkeitField.getText(), haufigkeittextjjjjField.getText());
-			setVisible(false);
-			dispose();
-			PutzplanGUI.getInstanz().updateBenutzer();
+		if (!(aufgabeField.getText().equals("Aufgabe")) && !(schwierigkeitField.getText().equals("Schwierigkeit (1-5)"))
+				&& !(haufigkeitField.getText().equals("Häufigkeit (pro Monat)"))) {
+			int s = 0;
+			int h = 0;
+			try {
+				s = Integer.parseInt(schwierigkeitField.getText().trim());
+				h = Integer.parseInt(haufigkeitField.getText().trim());
+				new Aufgabe(aufgabeField.getText(), s, h);
+				setVisible(false);
+				dispose();
+				PutzplanGUI.getInstanz().updateAufgaben();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	private void initializeField(JTextField field, String name) {
 		field.setForeground(Color.GRAY);
+		field.setHorizontalAlignment(JTextField.CENTER);
 		field.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 				if (field.getText().equals(name)) {
@@ -79,7 +86,28 @@ public class NeueAufgabeFrame extends JFrame {
 				}
 			}
 		});
-		field.setHorizontalAlignment(JTextField.CENTER);
+		if (field != aufgabeField) {
+			field.addKeyListener(new KeyAdapter() {
+				public void keyPressed(KeyEvent ke) {
+					if ((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') || ke.getKeyChar() == KeyEvent.VK_BACK_SPACE
+							|| ke.getKeyChar() == KeyEvent.VK_DELETE) {
+						field.setEditable(true);
+						/*
+						 * if(!(aufgabeField.getText().equals("Aufgabe")) &&
+						 * !(schwierigkeitField.getText().equals("Schwierigkeit (1-5)")) &&
+						 * !(haufigkeitField.getText().equals("Häufigkeit (pro Monat)")) &&
+						 * !(aufgabeField.getText().equals("")) &&
+						 * !(schwierigkeitField.getText().equals("")) &&
+						 * !(haufigkeitField.getText().equals(""))) { confirmBtn.setEnabled(true);
+						 * 
+						 * }
+						 */
+					} else {
+						field.setEditable(false);
+					}
+				}
+			});
+		}
 		hintergrund.add(field);
 	}
 

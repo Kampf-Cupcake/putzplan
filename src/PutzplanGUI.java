@@ -1,9 +1,13 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.LinkedList;
 
+// TODO: Aufgabengenerierung für beliebige Anzahl an Benutzern (Liste statt 3 Variablen?)
 public class PutzplanGUI extends JFrame implements ActionListener {
 
 	private static PutzplanGUI instanz;
@@ -25,6 +29,11 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	JButton person2 = new JButton();
 	JButton person3 = new JButton();
 	JButton aufgabenplus = new JButton();
+	JButton generierenBtn = new JButton("Generieren");
+
+	String colNames[] = { "Name", "Schwierigkeit", "Haeufigkeit", "Person" };
+	DefaultTableModel tableModel = new DefaultTableModel(colNames, 0);
+	JTable aufgabenauflistung = new JTable(tableModel);
 
 	// JLabel benutzer;
 	JLabel aufgabenUeberschrift;
@@ -111,10 +120,16 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		person3.addActionListener(this);
 		benutzer.add(person3);
 
+		new Benutzer("Andrea", "bilder\\personas\\Persona1.png");
+		new Benutzer("Bernd", "bilder\\personas\\Persona2.png");
+		new Benutzer("Claire", "bilder\\personas\\Persona3.png");
+		updateBenutzer();
+
 		benutzer.setVisible(false);
 
 		// haupt: aufgaben
 		aufgaben.setBackground(new Color(99, 0, 0));
+		aufgaben.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, -40));
 		haupt.add(aufgaben);
 		aufgaben.setLayout(new BorderLayout());
 		aufgabenUeberschrift = new JLabel("Aufgaben:");
@@ -123,8 +138,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgabenUeberschrift.setPreferredSize(new Dimension(200, 100));
 		aufgaben.add(aufgabenUeberschrift, BorderLayout.PAGE_START);
 
-//-> hier mit wirklich richtig mit den neuen Aufgaben?
-		// new Aufgabe("a", 3, 3);
 		new Aufgabe("Bad putzen", 5, 1);
 		new Aufgabe("Blumen giessen", 1, 3);
 		new Aufgabe("Boden wischen", 3, 1);
@@ -134,12 +147,12 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		new Aufgabe("Spülmaschine", 2, 3);
 		new Aufgabe("Staubsaugen", 1, 4);
 		new Aufgabe("Treppenhaus fegen", 2, 1);
-		JList aufgabenauflistung = new JList(Aufgabenliste.getInstanz().arrayAusgeben());
+		updateAufgaben();
+
 		aufgabenauflistung.setBackground(new Color(99, 0, 0));
 		aufgabenauflistung.setForeground(Color.white);
-		aufgabenauflistung.setFont(aufgabenauflistung.getFont().deriveFont(20f));
 		aufgabenauflistung.setPreferredSize(new Dimension(400, 400));
-		aufgaben.add(aufgabenauflistung, BorderLayout.CENTER);
+		aufgaben.add(new JScrollPane(aufgabenauflistung), BorderLayout.CENTER);
 
 		aufgabenplus.setIcon(resize(new ImageIcon("bilder\\icons\\plusrot.png"), hauptWidth / 3));
 		aufgabenplus.setMargin(new Insets(0, 0, 0, 0));
@@ -147,7 +160,19 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgabenplus.setContentAreaFilled(false);
 		aufgabenplus.addActionListener(this);
 
-		aufgaben.add(aufgabenplus, BorderLayout.LINE_END);
+		generierenBtn.setMargin(new Insets(0, 0, 0, 0));
+		generierenBtn.addActionListener(this);
+
+		JPanel btns = new JPanel();
+		btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
+		// btns.setAlignmentY(Component.CENTER_ALIGNMENT);
+		btns.add(aufgabenplus);
+		JPanel helperPanel = new JPanel();
+		helperPanel.setMaximumSize(new Dimension(hauptWidth / 4, 400));
+		helperPanel.add(generierenBtn);
+		btns.add(helperPanel);
+		btns.setBackground(new Color(99, 0, 0));
+		aufgaben.add(btns, BorderLayout.LINE_END);
 		aufgaben.setVisible(false);
 
 		// haupt: kalender
@@ -186,12 +211,10 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	}
 
 	public void updateBenutzer() {
-		System.out.println("Aufruf updateBenutzer");
 		for (int i = 0; i < 3; i++) {
 			if (Benutzer.getAlleBenutzer().size() > i) {
 				switch (i) {
 				case 0:
-					System.out.println(Benutzer.getAlleBenutzer().get(0).getBild());
 					person1.setIcon(resize(new ImageIcon(Benutzer.getAlleBenutzer().get(0).getBild()), hauptWidth / 3));
 					break;
 				case 1:
@@ -199,6 +222,45 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 					break;
 				case 2:
 					person3.setIcon(resize(new ImageIcon(Benutzer.getAlleBenutzer().get(2).getBild()), hauptWidth / 3));
+					break;
+				}
+			}
+		}
+	}
+
+	public void updateAufgaben() {
+		while (tableModel.getRowCount() > 0) {
+			tableModel.removeRow(0);
+		}
+		for (Aufgabe a : Aufgabe.getAlleAufgaben()) {
+			tableModel.addRow(new Object[] { a.getName(), a.getSchwierigkeit(), a.getHaeufigkeit(), "test" });
+		}
+	}
+
+	public void planGenerieren() {
+		LinkedList<Benutzer> benutzer = (LinkedList<Benutzer>) Benutzer.getAlleBenutzer().clone();
+		Collections.shuffle(benutzer);
+		LinkedList<Aufgabe> aufgaben = Aufgabe.getAlleAufgaben();
+
+		LinkedList<Integer> schwierigk = new LinkedList<Integer>();
+
+		for (Benutzer b : benutzer) {
+			schwierigk.add(0);
+		}
+
+		for (int aktuelleAufgabe = 0; aktuelleAufgabe < aufgaben.size(); aktuelleAufgabe++) {
+			for (int aktuell = 0; aktuell < schwierigk.size(); aktuell++) {
+				boolean istKleinste = true;
+				for (int vergleich = aktuell + 1; vergleich < schwierigk.size(); vergleich++) {
+					if (schwierigk.get(vergleich) < schwierigk.get(aktuell)) {
+						istKleinste = false;
+						break;
+					}
+				}
+				if (istKleinste) {
+					schwierigk.set(aktuell, aufgaben.get(aktuelleAufgabe).getSchwierigkeit() + schwierigk.get(aktuell));
+					Benutzer.getAlleBenutzer().get(aktuell).aufgabeGeben(aufgaben.get(aktuelleAufgabe));
+					tableModel.setValueAt(aktuell + 1, aktuelleAufgabe, 3);
 					break;
 				}
 			}
@@ -225,17 +287,12 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			aufgaben.setVisible(false);
 			kalender.setVisible(true);
 			haupt.setBackground(new Color(22, 35, 54));
-		} else if (ae.getSource() == this.person1) {
-			NeuerBenutzerFrame.getInstanz();
-			NeuerBenutzerFrame.getInstanz().setVisible(true);
-		} else if (ae.getSource() == this.person2) {
-			NeuerBenutzerFrame.getInstanz();
-			NeuerBenutzerFrame.getInstanz().setVisible(true);
-		} else if (ae.getSource() == this.person3) {
-			NeuerBenutzerFrame.getInstanz();
+		} else if (ae.getSource() == this.person1 || ae.getSource() == this.person2 || ae.getSource() == this.person3) {
 			NeuerBenutzerFrame.getInstanz().setVisible(true);
 		} else if (ae.getSource() == this.aufgabenplus) {
-
+			NeueAufgabeFrame.getInstanz().setVisible(true);
+		} else if (ae.getSource() == this.generierenBtn) {
+			planGenerieren();
 		}
 	}
 

@@ -11,7 +11,6 @@ public class Benutzer {
 		this.name = n;
 		this.bild = b;
 		alleBenutzer.add(this);
-		System.out.println(alleBenutzer);
 	}
 
 	public String toString() {

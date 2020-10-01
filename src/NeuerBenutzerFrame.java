@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-// TODO: click auf existierenden Benutzer -> Benutzer bearbeiten
+// TODO: click auf existierenden Benutzer -> Benutzer bearbeiten, Vererbung: abstrakte neuerFrame Klasse
 public class NeuerBenutzerFrame extends JFrame {
 	private static NeuerBenutzerFrame instanz;
 
@@ -25,8 +25,6 @@ public class NeuerBenutzerFrame extends JFrame {
 
 	public NeuerBenutzerFrame() {
 		setTitle("Benutzer erstellen");
-		//wollen ja nicht direkt alles schliesen, nur weil wir den frame zu machen wollen
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 
 		GridLayout layout = new GridLayout(3, 0);
