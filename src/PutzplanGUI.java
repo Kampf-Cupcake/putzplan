@@ -16,15 +16,15 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	JPanel haupt = new JPanel();
 	JPanel menu = new JPanel();
 	JPanel benutzer = new JPanel();
-	JPanel benutzer1 = new JPanel();
-	JPanel benutzer2 = new JPanel();
+//	JPanel benutzer1 = new JPanel();
+//	JPanel benutzer2 = new JPanel();
 	JPanel aufgaben = new JPanel();
 	JPanel kalendarHin = new JPanel();
 	MonthPanel kalender;
 
 	JButton benutzerMB = new JButton();
 	JButton aufgabenMB = new JButton();
-	JButton kalenderMB = new JButton();
+	JButton toDoMB = new JButton();
 	JButton person1 = new JButton();
 	JButton person2 = new JButton();
 	JButton person3 = new JButton();
@@ -36,7 +36,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	JTable aufgabenauflistung = new JTable(tableModel);
 
 	// JLabel benutzer;
-	JLabel aufgabenUeberschrift;
+	//JLabel aufgabenUeberschrift;
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	int windowHeight = (int) Math.ceil(0.8 * screenSize.getHeight());
@@ -82,12 +82,12 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgabenMB.setContentAreaFilled(false);
 		menu.add(aufgabenMB);
 
-		kalenderMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_kalendar3.png"), menuWidth));
-		kalenderMB.setMargin(new Insets(-4, 0, -4, 0));
-		kalenderMB.addActionListener(this);
-		kalenderMB.setBorderPainted(false);
-		kalenderMB.setContentAreaFilled(false);
-		menu.add(kalenderMB);
+		toDoMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_kalendar3.png"), menuWidth));
+		toDoMB.setMargin(new Insets(-4, 0, -4, 0));
+		toDoMB.addActionListener(this);
+		toDoMB.setBorderPainted(false);
+		toDoMB.setContentAreaFilled(false);
+		menu.add(toDoMB);
 
 		// haupt
 		haupt.setPreferredSize(new Dimension(hauptWidth, windowHeight));
@@ -132,11 +132,11 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgaben.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, -40));
 		haupt.add(aufgaben);
 		aufgaben.setLayout(new BorderLayout());
-		aufgabenUeberschrift = new JLabel("Aufgaben:");
+		/**aufgabenUeberschrift = new JLabel("Aufgaben:");
 		aufgabenUeberschrift.setForeground(Color.white);
 		aufgabenUeberschrift.setFont(aufgabenUeberschrift.getFont().deriveFont(40f));
 		aufgabenUeberschrift.setPreferredSize(new Dimension(200, 100));
-		aufgaben.add(aufgabenUeberschrift, BorderLayout.PAGE_START);
+		aufgaben.add(aufgabenUeberschrift, BorderLayout.PAGE_START);*/
 
 		new Aufgabe("Bad putzen", 5, 1);
 		new Aufgabe("Blumen giessen", 1, 3);
@@ -278,11 +278,11 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			haupt.setBackground(new Color(1, 83, 82));
 		} else if (ae.getSource() == this.aufgabenMB) {
 			benutzer.setVisible(false);
-			benutzer1.setVisible(false);
+//			benutzer1.setVisible(false);
 			aufgaben.setVisible(true);
 			kalender.setVisible(false);
 			haupt.setBackground(new Color(99, 0, 0));
-		} else if (ae.getSource() == this.kalenderMB) {
+		} else if (ae.getSource() == this.toDoMB) {
 			benutzer.setVisible(false);
 			aufgaben.setVisible(false);
 			kalender.setVisible(true);

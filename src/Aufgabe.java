@@ -2,9 +2,9 @@ import java.util.LinkedList;
 
 public class Aufgabe {
 
-	String name;
-	int schwierigkeit;
-	int haeufigkeit;
+	private String name;
+	private int schwierigkeit;
+	private int haeufigkeit;
 
 	private static LinkedList<Aufgabe> alleAufgaben = new LinkedList<Aufgabe>();
 

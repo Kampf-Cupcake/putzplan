@@ -2,8 +2,8 @@ import java.util.LinkedList;
 
 public class Benutzer {
 
-	String name;
-	String bild; // muss noch angepasst werden
+	private String name;
+	private String bild; // muss noch angepasst werden
 	LinkedList<Aufgabe> aufgabenliste = new LinkedList<Aufgabe>();
 	private static LinkedList<Benutzer> alleBenutzer = new LinkedList<Benutzer>();
 
