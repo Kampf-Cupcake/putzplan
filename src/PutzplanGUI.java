@@ -120,7 +120,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		person3.addActionListener(this);
 		benutzer.add(person3);
 
-		new Benutzer("Amelie", "bilder\\personas\\Persona1.png");
+		new Benutzer("Andrea", "bilder\\personas\\Persona1.png");
 		new Benutzer("Bernd", "bilder\\personas\\Persona2.png");
 		new Benutzer("Claire", "bilder\\personas\\Persona3.png");
 		updateBenutzer();
