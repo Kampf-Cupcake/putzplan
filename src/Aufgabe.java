@@ -12,29 +12,23 @@ public class Aufgabe {
 		this.name = n;
 		this.schwierigkeit = s;
 		this.haeufigkeit = h;
-		alleAufgaben.add(this);
 
-		LinkedList<Aufgabe> neu = new LinkedList<Aufgabe>();
-		/*
-		 * System.out.println("Neue Aufgabe: " + n);
-		 * System.out.println(alleAufgaben.size()); for (int akt = 0; akt <
-		 * alleAufgaben.size(); akt++) { System.out.println("  " + akt + ": " +
-		 * alleAufgaben.get(akt)); boolean istHoechste = true; for (int verg = akt + 1;
-		 * verg < alleAufgaben.size(); verg++) { System.out.println("    " + verg + ": "
-		 * + alleAufgaben.get(verg)); if (alleAufgaben.get(akt).getSchwierigkeit() *
-		 * alleAufgaben.get(akt).getHaeufigkeit() < alleAufgaben
-		 * .get(verg).getSchwierigkeit() * alleAufgaben.get(verg).getHaeufigkeit()) {
-		 * System.out.println("nicht Höchste"); istHoechste = false; } } if
-		 * (istHoechste) { System.out.println("ist Höchste");
-		 * neu.add(alleAufgaben.get(akt)); } }
-		 */
+		LinkedList<Aufgabe> neu = (LinkedList<Aufgabe>) alleAufgaben.clone();
 
-		for (int i = 5; i > 0; i--) {
-			for (Aufgabe a : alleAufgaben) {
-				if (a.getSchwierigkeit() * a.getHaeufigkeit() == i) {
-					neu.add(a);
+		if (!alleAufgaben.isEmpty()) {
+			if (s * h < alleAufgaben.get(alleAufgaben.size() - 1).getSchwierigkeit()
+					* alleAufgaben.get(alleAufgaben.size() - 1).getHaeufigkeit()) {
+				neu.add(this);
+			} else {
+				for (int i = 0; i < alleAufgaben.size(); i++) {
+					if (s * h > alleAufgaben.get(i).getSchwierigkeit() * alleAufgaben.get(i).getHaeufigkeit()) {
+						neu.add(i, this);
+						break;
+					}
 				}
 			}
+		} else {
+			neu.add(this);
 		}
 		alleAufgaben = neu;
 	}

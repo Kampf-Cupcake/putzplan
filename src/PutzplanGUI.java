@@ -68,21 +68,21 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		menu.setPreferredSize(new Dimension(menuWidth, windowHeight));
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 
-		benutzerMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_benutzer3.png"), menuWidth));
+		benutzerMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_benutzer3.png"), (int) (menuWidth * 1.05f)));
 		benutzerMB.setMargin(new Insets(-4, 0, -4, 0));
 		benutzerMB.addActionListener(this);
 		benutzerMB.setBorderPainted(false);
 		benutzerMB.setContentAreaFilled(false);
 		menu.add(benutzerMB);
 
-		aufgabenMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_aufgaben3.png"), menuWidth));
+		aufgabenMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_aufgaben3.png"), (int) (menuWidth * 1.05f)));
 		aufgabenMB.setMargin(new Insets(-4, 0, -4, 0));
 		aufgabenMB.addActionListener(this);
 		aufgabenMB.setBorderPainted(false);
 		aufgabenMB.setContentAreaFilled(false);
 		menu.add(aufgabenMB);
 
-		kalenderMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_kalendar3.png"), menuWidth));
+		kalenderMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_kalendar3.png"), (int) (menuWidth * 1.05f)));
 		kalenderMB.setMargin(new Insets(-4, 0, -4, 0));
 		kalenderMB.addActionListener(this);
 		kalenderMB.setBorderPainted(false);
@@ -185,7 +185,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-
 		getInstanz();
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -233,7 +232,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			tableModel.removeRow(0);
 		}
 		for (Aufgabe a : Aufgabe.getAlleAufgaben()) {
-			tableModel.addRow(new Object[] { a.getName(), a.getSchwierigkeit(), a.getHaeufigkeit(), "test" });
+			tableModel.addRow(new Object[] { a.getName(), a.getSchwierigkeit(), a.getHaeufigkeit(), ""});
 		}
 	}
 
@@ -241,7 +240,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		LinkedList<Benutzer> benutzer = (LinkedList<Benutzer>) Benutzer.getAlleBenutzer().clone();
 		Collections.shuffle(benutzer);
 		LinkedList<Aufgabe> aufgaben = Aufgabe.getAlleAufgaben();
-
 		LinkedList<Integer> schwierigk = new LinkedList<Integer>();
 
 		for (Benutzer b : benutzer) {
@@ -258,9 +256,13 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 					}
 				}
 				if (istKleinste) {
-					schwierigk.set(aktuell, aufgaben.get(aktuelleAufgabe).getSchwierigkeit() + schwierigk.get(aktuell));
+					schwierigk
+							.set(aktuell,
+									(aufgaben.get(aktuelleAufgabe).getSchwierigkeit()
+											* aufgaben.get(aktuelleAufgabe).getHaeufigkeit())
+											+ schwierigk.get(aktuell));
 					Benutzer.getAlleBenutzer().get(aktuell).aufgabeGeben(aufgaben.get(aktuelleAufgabe));
-					tableModel.setValueAt(aktuell + 1, aktuelleAufgabe, 3);
+					tableModel.setValueAt(benutzer.get(aktuell), aktuelleAufgabe, 3);
 					break;
 				}
 			}
