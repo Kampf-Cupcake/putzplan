@@ -82,7 +82,7 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		aufgabenMB.setContentAreaFilled(false);
 		menu.add(aufgabenMB);
 		
-		toDoMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_kalendar3.png"), menuWidth));
+		toDoMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_kalendar3.png"), (int) (menuWidth * 1.05f)));
 		toDoMB.setMargin(new Insets(-4, 0, -4, 0));
 		toDoMB.addActionListener(this);
 		toDoMB.setBorderPainted(false);
