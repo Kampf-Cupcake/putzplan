@@ -3,9 +3,18 @@ import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedList;
+
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.WriterProperties;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 
 // TODO: Aufgabengenerierung für beliebige Anzahl an Benutzern (Liste statt 3 Variablen?)
 public class PutzplanGUI extends JFrame implements ActionListener {
@@ -198,7 +207,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			name.setFont(new Font("Arial", 1, 24));
 			personPanel.add(name);
 
-			System.out.println(i);
 			c.gridy = 0;
 			c.gridy = i;
 			persPanels.add(personPanel);
@@ -317,6 +325,14 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 		kalender.revalidate();
 	}
 
+	public void planExportieren() throws IOException {
+        final PdfWriter pdfWriter = new PdfWriter("hello.pdf");
+        final PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+        try (final Document document = new Document(pdfDocument)) {
+            document.add(new Paragraph("Hello World!"));
+        }
+	}
+
 	public void actionPerformed(ActionEvent ae) {
 		// Die Quelle wird mit getSource() abgefragt und mit den
 		// Buttons abgeglichen. Wenn die Quelle des ActionEvents einer
@@ -343,6 +359,13 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 			NeueAufgabeFrame.getInstanz().setVisible(true);
 		} else if (ae.getSource() == this.generierenBtn) {
 			planGenerieren();
+		} else if (ae.getSource() == this.exportBtn) {
+			try {
+				planExportieren();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
