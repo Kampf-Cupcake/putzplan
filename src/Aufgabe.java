@@ -21,7 +21,7 @@ public class Aufgabe {
 				neu.add(this);
 			} else {
 				for (int i = 0; i < alleAufgaben.size(); i++) {
-					if (s * h > alleAufgaben.get(i).getSchwierigkeit() * alleAufgaben.get(i).getHaeufigkeit()) {
+					if (s * h >= alleAufgaben.get(i).getSchwierigkeit() * alleAufgaben.get(i).getHaeufigkeit()) {
 						neu.add(i, this);
 						break;
 					}
@@ -31,6 +31,7 @@ public class Aufgabe {
 			neu.add(this);
 		}
 		alleAufgaben = neu;
+		MainController.updateAufgaben();
 	}
 
 	public String toString() {

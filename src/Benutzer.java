@@ -11,6 +11,7 @@ public class Benutzer {
 		this.name = n;
 		this.bild = b;
 		alleBenutzer.add(this);
+		MainController.updateBenutzer();
 	}
 
 	public String toString() {
