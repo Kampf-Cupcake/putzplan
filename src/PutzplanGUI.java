@@ -25,8 +25,6 @@ public class PutzplanGUI extends JFrame implements ActionListener {
 	JPanel haupt = new JPanel();
 	JPanel menu = new JPanel();
 	JPanel benutzer = new JPanel();
-//	JPanel benutzer1 = new JPanel();
-//	JPanel benutzer2 = new JPanel();
 	JPanel aufgaben = new JPanel();
 	JPanel kalendarHin = new JPanel();
 	JPanel kalender = new JPanel();
