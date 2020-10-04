@@ -26,10 +26,13 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 
-// TODO: ToDo läd nicht richtig, erst bei Aufruf in main
 public class MainController {
 	private static MainWindow instanz;
 
+	/**
+	 * Statische Methode zum erstellen der Instanz des Hauptfensters
+	 * @return Instanz des Hauptfensters
+	 */
 	public static MainWindow getInstanz() {
 		if (instanz == null) {
 			instanz = new MainWindow();
@@ -37,6 +40,10 @@ public class MainController {
 		return instanz;
 	}
 
+	/**
+	 * Main-Methode mit Generierung der Hauptfenster-Instanz
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		getInstanz();
 		try {
@@ -44,7 +51,6 @@ public class MainController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		getInstanz().setVisible(true);
 
 		new Benutzer("Andrea", "bilder\\personas\\Persona1.png");
 		new Benutzer("Bernd", "bilder\\personas\\Persona2.png");
@@ -59,10 +65,11 @@ public class MainController {
 		new Aufgabe("Spülmaschine", 2, 3);
 		new Aufgabe("Staubsaugen", 1, 4);
 		new Aufgabe("Treppenhaus fegen", 2, 1);
-
-		instanz.revalidate();
 	}
 
+	/**
+	 * Funktion zum befüllen der Aufgabentabelle
+	 */
 	public static void updateAufgaben() {
 		while (getInstanz().getTableModel().getRowCount() > 0) {
 			getInstanz().getTableModel().removeRow(0);
@@ -72,6 +79,9 @@ public class MainController {
 		}
 	}
 
+	/**
+	 * Funktion zum ändern der Benutzer-Buttons
+	 */
 	public static void updateBenutzer() {
 		for (int i = 0; i < Benutzer.getAlleBenutzer().size(); i++) {
 			instanz.getBenutzerButtons()[i].setIcon(instanz
@@ -79,14 +89,24 @@ public class MainController {
 		}
 	}
 
+	/**
+	 * Funktion zum exportieren des Aufgabenplans aller Benutzer
+	 * @throws IOException
+	 */
 	public static void planExportieren() throws IOException {
-		final PdfWriter pdfWriter = new PdfWriter("hello.pdf");
-		final PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-		try (final Document document = new Document(pdfDocument)) {
+		/*
+		PdfWriter pdfWriter = new PdfWriter("hello.pdf");
+		PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+		try (Document document = new Document(pdfDocument)) {
 			document.add(new Paragraph("Hello World!"));
-		}
+		}*/
+		System.out.println("Noch nicht implementiert.");
 	}
 
+	/**
+	 * Verarbeitet alle Buttonclicks im Hauptfenster
+	 * @param ae onClick-Event
+	 */
 	public static void onClick(ActionEvent ae) {
 		if (ae.getSource() == instanz.getBenutzerMB()) {
 			instanz.getBenutzerPanel().setVisible(true);
@@ -103,9 +123,11 @@ public class MainController {
 			instanz.getAufgabenPanel().setVisible(false);
 			instanz.getKalenderPanel().setVisible(true);
 			instanz.getHauptPanel().setBackground(new Color(22, 35, 54));
-		} else if (ae.getSource() == instanz.getBenutzerButtons()[0]
-				|| ae.getSource() == instanz.getBenutzerButtons()[1]
-				|| ae.getSource() == instanz.getBenutzerButtons()[2]) {
+		} else if (ae.getSource() == instanz.getBenutzerButtons()[0] && Benutzer.getAlleBenutzer().size() < 1) {
+			NeuerBenutzerController.getInstanz().setVisible(true);
+		} else if (ae.getSource() == instanz.getBenutzerButtons()[1] && Benutzer.getAlleBenutzer().size() < 2) {
+			NeuerBenutzerController.getInstanz().setVisible(true);
+		} else if (ae.getSource() == instanz.getBenutzerButtons()[2] && Benutzer.getAlleBenutzer().size() < 3) {
 			NeuerBenutzerController.getInstanz().setVisible(true);
 		} else if (ae.getSource() == instanz.getAufgabenplusButton()) {
 			NeueAufgabeController.getInstanz().setVisible(true);
@@ -120,6 +142,9 @@ public class MainController {
 		}
 	}
 
+	/**
+	 * Verteilt alle Aufgaben fair unter den Benutzern und auf Tage im angegebenen Zeitraum
+	 */
 	public static void planGenerieren() {
 		// Datumseingaben prüfen
 		LocalDate start = LocalDate.parse(instanz.getStartDate());
@@ -135,9 +160,8 @@ public class MainController {
 				haeufigste = a.getHaeufigkeit();
 			}
 		}
-		System.out.println("Zr: " + zeitraum + " H: " + haeufigste);
 		if (haeufigste > zeitraum) {
-			System.out.println("Zeitraum zu kruz");
+			System.out.println("Zeitraum zu kuz");
 			return;
 		}
 
@@ -154,10 +178,10 @@ public class MainController {
 		// Aufgaben durchlaufen
 		for (int aktuelleAufgabe = 0; aktuelleAufgabe < aufgaben.size(); aktuelleAufgabe++) {
 			// Benutzer durchlaufen
-			for (int aktuell = 0; aktuell < schwierigk.size(); aktuell++) {
+			for (int aktuell = 0; aktuell < benutzer.size(); aktuell++) {
 				boolean istKleinste = true;
 				// Benutzer für Aufgabe finden
-				for (int vergleich = aktuell + 1; vergleich < schwierigk.size(); vergleich++) {
+				for (int vergleich = aktuell + 1; vergleich < benutzer.size(); vergleich++) {
 					if (schwierigk.get(vergleich) < schwierigk.get(aktuell)) {
 						istKleinste = false;
 						break;
@@ -171,9 +195,8 @@ public class MainController {
 									(aufgaben.get(aktuelleAufgabe).getSchwierigkeit()
 											* aufgaben.get(aktuelleAufgabe).getHaeufigkeit())
 											+ schwierigk.get(aktuell));
-					
+
 					ben = benutzer.get(aktuell);
-					System.out.println(ben + " " + aufgaben.get(aktuelleAufgabe));
 					// ben.aufgabeGeben(aufgaben.get(aktuelleAufgabe));
 					int h = aufgaben.get(aktuelleAufgabe).getHaeufigkeit();
 					int pause = zeitraum / h;
@@ -184,6 +207,7 @@ public class MainController {
 
 						// Label für Aufgabe
 						JLabel l = new JLabel();
+						l.setAlignmentX(Component.LEFT_ALIGNMENT);
 						instanz.getAufgabenPanels().get(Benutzer.getAlleBenutzer().indexOf(ben)).add(l);
 
 						// Typewriter-Animation
@@ -208,23 +232,17 @@ public class MainController {
 						}.init(l, d + ": " + aufgaben.get(aktuelleAufgabe).getName()), 0, 100, TimeUnit.MILLISECONDS);
 						d = d.plusDays(pause);
 					}
-
+					break;
 				}
 			}
-
-			// Verteilung auf Tage
-			/*
-			 * int h = aufgaben.get(aktuelleAufgabe).getHaeufigkeit(); int pause =
-			 * zeitraum/h; LocalDate d = start; for(int i = 0; i < h; i++) { new
-			 * AufgabeMitDatum(aufgaben.get(aktuelleAufgabe), d, ben); d =
-			 * d.plusDays(pause); }
-			 */
 		}
-
-		// Button disabled
 		instanz.getGenerierenButton().setEnabled(false);
 	}
 
+	/**
+	 * Erstellt ein JPanel, das Bild, Name und Aufgaben eines Benutzers enthält
+	 * @param b
+	 */
 	public static void buildToDoPanel(Benutzer b) {
 
 		JPanel personPanel = new JPanel();
@@ -245,13 +263,14 @@ public class MainController {
 		name.setFont(new Font("Arial", 1, 32));
 		personPanel.add(name);
 
-		c.gridy = 0;
+		c.gridx = 0;
 		c.gridy = b.getID();
 		instanz.getToDoList().add(personPanel);
 
 		JPanel aufgaben = new JPanel();
 		aufgaben.setBackground(Color.LIGHT_GRAY);
 		aufgaben.setLayout(new BoxLayout(aufgaben, BoxLayout.Y_AXIS));
+		aufgaben.setAlignmentX(Component.LEFT_ALIGNMENT);
 		instanz.getAufgabenPanels().add(aufgaben);
 		instanz.getToDoList().add(aufgaben);
 	}

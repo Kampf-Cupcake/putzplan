@@ -19,14 +19,11 @@ import com.itextpdf.layout.element.Paragraph;
 
 public class MainWindow extends JFrame implements ActionListener {
 
-	private static MainWindow instanz;
-
 	private JPanel hintergrund = new JPanel();
 	private JPanel haupt = new JPanel();
 	private JPanel menu = new JPanel();
 	private JPanel benutzer = new JPanel();
 	private JPanel aufgaben = new JPanel();
-	private JPanel kalendarHin = new JPanel();
 	private JPanel kalender = new JPanel();
 	private JPanel toDoList = new JPanel();
 
@@ -46,7 +43,6 @@ public class MainWindow extends JFrame implements ActionListener {
 			new String[] { "Name", "Schwierigkeit", "Haeufigkeit" }, 0);
 	private JTable aufgabenauflistung = new JTable(tableModel);
 
-	private LinkedList<JPanel> persPanels = new LinkedList<JPanel>();
 	private LinkedList<JPanel> aufgabenPanels = new LinkedList<JPanel>();
 
 	private JTextField startDate = new JTextField();
@@ -58,6 +54,9 @@ public class MainWindow extends JFrame implements ActionListener {
 	private int menuWidth = (int) (windowWidth / 6);
 	private int hauptWidth = windowWidth - menuWidth;
 
+	/**
+	 * Konstruktor zum erstellen des Hauptfensters der Anwendung
+	 */
 	public MainWindow() {
 
 		// MainWindow
@@ -144,7 +143,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		toDoList.setLayout(new BoxLayout(toDoList, BoxLayout.Y_AXIS));
 		toDoList.setBackground(Color.LIGHT_GRAY);
-
+		
 		kalender.add(toDoList, BorderLayout.CENTER);
 
 		JPanel toDoBtns = new JPanel();
@@ -157,8 +156,15 @@ public class MainWindow extends JFrame implements ActionListener {
 		haupt.add(kalender);
 		kalender.setVisible(false);
 		pack();
+		setVisible(true);
 	}
 
+	/**
+	 * Funktion zum skalieren eines ImageIcons
+	 * @param i zu skalierendes ImageIcon
+	 * @param width gewünschte Breite
+	 * @return skaliertes ImageIcon
+	 */
 	public ImageIcon resize(ImageIcon i, int width) {
 		Image image = i.getImage();
 		int newH = (int) Math.round(i.getIconHeight() * ((float) width / i.getIconWidth()));

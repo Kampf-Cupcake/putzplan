@@ -15,6 +15,9 @@ public class NeueAufgabeWindow extends JFrame {
 	String schwierigkeit;
 	String haufigkeit;
 
+	/**
+	 * Konstruktor zum erstellen eines neuen Fensters zur Eingabe einer neuen Aufgabe
+	 */
 	public NeueAufgabeWindow() {
 		setTitle("Aufgabe erstellen");
 		setResizable(false);
@@ -41,6 +44,11 @@ public class NeueAufgabeWindow extends JFrame {
 		pack();
 	}
 
+	/**
+	 * Passt das Aussehen eines TextFields an
+	 * @param field anzupassendes TextField
+	 * @param name Inhalt des TextFields
+	 */
 	private void initializeField(JTextField field, String name) {
 		field.setForeground(Color.GRAY);
 		field.setHorizontalAlignment(JTextField.CENTER);

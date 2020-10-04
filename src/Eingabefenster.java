@@ -5,6 +5,11 @@ import java.awt.event.FocusListener;
 import javax.swing.JTextField;
 
 public interface Eingabefenster {
+	/**
+	 * Fügt einem TextField einen Platzhalter hinzu. (Wird bei fokussiertem Feld ausgeblendet)
+	 * @param field TextField, das den Platzhalter erhalten soll
+	 * @param platzhalter Platzhalter-Text
+	 */
 	static void platzhalter(JTextField field, String platzhalter) {
 		field.setForeground(Color.GRAY);
 		FocusListener f = new FocusListener() {

@@ -3,6 +3,10 @@ import javax.swing.JTextField;
 public class NeueAufgabeController {
 	private static NeueAufgabeWindow instanz;
 
+	/**
+	 * Statische Methode zum erstellen der Instanz des Fensters für die Eingabe einer neuen Aufgabe
+	 * @return instanz des Fensters
+	 */
 	public static NeueAufgabeWindow getInstanz() {
 		if (instanz == null) {
 			instanz = new NeueAufgabeWindow();
@@ -10,6 +14,12 @@ public class NeueAufgabeController {
 		return instanz;
 	}
 	
+	/**
+	 * Überprüft die Inhalte der Eingabefelder und erstellt eine neue Aufgabe
+	 * @param aufgabeField Eingabefeld für den Aufgabennamen
+	 * @param schwierigkeitField Eingabefeld für die Schwierigkeit einer Aufgabe
+	 * @param haeufigkeitField Eingabefeld für die Häufigkeit einer Aufgabe
+	 */
 	public static void confirmAufgabe(JTextField aufgabeField, JTextField schwierigkeitField, JTextField haeufigkeitField) {
 		if (!(aufgabeField.getText().equals("Aufgabe")) && !(schwierigkeitField.getText().equals("Schwierigkeit (1-5)"))
 				&& !(haeufigkeitField.getText().equals("Häufigkeit (pro Monat)"))) {

@@ -8,6 +8,12 @@ public class Aufgabe {
 
 	private static LinkedList<Aufgabe> alleAufgaben = new LinkedList<Aufgabe>();
 
+	/**
+	 * Konstruktor zum erstellen einer neuen Aufgabe
+	 * @param n Aufgabenname
+	 * @param s Schwierigkeit
+	 * @param h Haeufigkeit im separat bestimmbaren Zeitraum
+	 */
 	public Aufgabe(String n, int s, int h) {
 		this.name = n;
 		this.schwierigkeit = s;
@@ -34,28 +40,34 @@ public class Aufgabe {
 		MainController.updateAufgaben();
 	}
 
-	public String toString() {
-		return this.name + " S:" + this.schwierigkeit + " H:" + this.haeufigkeit;
-	}
-
+	/**
+	 * Ausgabe des Namen der Aufgabe
+	 * @return Aufgabenname
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Ausgabe der Schwierigkeit der Aufgabe
+	 * @return Schwierigkeit
+	 */
 	public int getSchwierigkeit() {
 		return this.schwierigkeit;
 	}
 
+	/**
+	 * Ausgabe der Haeufigkeit der Aufgabe in einem separat bestimmbaren Zeitraum
+	 * @return
+	 */
 	public int getHaeufigkeit() {
 		return this.haeufigkeit;
 	}
 
-	public void bearbeiten(String n, int s, int h) {
-		this.name = n;
-		this.schwierigkeit = s;
-		this.haeufigkeit = h;
-	}
-
+	/**
+	 * Statische Methode zum ausgeben aller Aufgaben
+	 * @return Liste mit allen Aufgaben
+	 */
 	public static LinkedList<Aufgabe> getAlleAufgaben() {
 		return alleAufgaben;
 	}

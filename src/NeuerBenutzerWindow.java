@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-// TODO: click auf existierenden Benutzer -> Benutzer bearbeiten, Vererbung: abstrakte neuerFrame Klasse
 public class NeuerBenutzerWindow extends JFrame {
 
 	JPanel hintergrund = new JPanel();
@@ -15,6 +14,9 @@ public class NeuerBenutzerWindow extends JFrame {
 	JButton confirmBtn = new JButton("Bestätigen");
 	String file;
 
+	/**
+	 * Konstruktor zum erstellen eines neuen Fensters zum erstellen eines neuen Benutzers
+	 */
 	public NeuerBenutzerWindow() {
 		setTitle("Benutzer erstellen");
 		setResizable(false);
@@ -34,7 +36,7 @@ public class NeuerBenutzerWindow extends JFrame {
 		hintergrund.add(nameField);
 
 		bildBtn.addActionListener(e -> {
-			file = NeuerBenutzerController.selectFile(confirmBtn, file);
+			file = NeuerBenutzerController.selectFile(confirmBtn);
 		});
 		hintergrund.add(bildBtn);
 
