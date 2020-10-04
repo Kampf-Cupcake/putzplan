@@ -24,7 +24,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JPanel menu = new JPanel();
 	private JPanel benutzer = new JPanel();
 	private JPanel aufgaben = new JPanel();
-	private JPanel kalender = new JPanel();
+	private JPanel toDoPanel = new JPanel();
 	private JPanel toDoList = new JPanel();
 
 	private JButton benutzerMB = new JButton();
@@ -68,7 +68,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		hintergrund.setLayout(new BoxLayout(hintergrund, BoxLayout.X_AXIS));
 		hintergrund.add(menu);
 		hintergrund.add(haupt);
-		// Insets insets = hintergrund.getInsets();
 		hintergrund.setPreferredSize(new Dimension(windowWidth, windowHeight));
 		add(hintergrund);
 
@@ -127,8 +126,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		aufgaben.add(aufgabenplus, BorderLayout.EAST);
 
 		// Haupt: ToDo
-		kalender.setBackground(new Color(22, 35, 54));
-		kalender.setLayout(new BorderLayout());
+		toDoPanel.setBackground(new Color(22, 35, 54));
+		toDoPanel.setLayout(new BorderLayout());
 		startDate.setText(LocalDate.now().toString());
 		endDate.setText(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().lengthOfMonth()).toString());
 		startDate.setMargin(new Insets(5,5,5,5));
@@ -139,22 +138,23 @@ public class MainWindow extends JFrame implements ActionListener {
 		dates.setLayout(new BoxLayout(dates, BoxLayout.X_AXIS));
 		dates.add(startDate);
 		dates.add(endDate);
-		kalender.add(dates, BorderLayout.NORTH);
+		toDoPanel.add(dates, BorderLayout.NORTH);
 		
 		toDoList.setLayout(new BoxLayout(toDoList, BoxLayout.Y_AXIS));
 		toDoList.setBackground(Color.LIGHT_GRAY);
 		
-		kalender.add(toDoList, BorderLayout.CENTER);
+		toDoPanel.add(toDoList, BorderLayout.CENTER);
 
 		JPanel toDoBtns = new JPanel();
 		toDoBtns.setLayout(new BoxLayout(toDoBtns, BoxLayout.Y_AXIS));
 		generierenBtn.addActionListener(this);
 		toDoBtns.add(generierenBtn);
 		exportBtn.addActionListener(this);
+		exportBtn.setEnabled(false);
 		toDoBtns.add(exportBtn);
-		kalender.add(toDoBtns, BorderLayout.EAST);
-		haupt.add(kalender);
-		kalender.setVisible(false);
+		toDoPanel.add(toDoBtns, BorderLayout.EAST);
+		haupt.add(toDoPanel);
+		toDoPanel.setVisible(false);
 		pack();
 		setVisible(true);
 	}
@@ -172,74 +172,145 @@ public class MainWindow extends JFrame implements ActionListener {
 		return i;
 	}
 
+	/**
+	 * Ausgabe des TableModels
+	 * @return TableModel
+	 */
 	public DefaultTableModel getTableModel() {
 		return tableModel;
 	}
 
+	/**
+	 * Ausgabe des Panels für die ToDoList
+	 * @return ToDoList-Panel
+	 */
 	public JPanel getToDoList() {
 		return toDoList;
 	}
 
+	/**
+	 * Aufruf der Verwaltung von onClick-Events
+	 */
 	public void actionPerformed(ActionEvent ae) {
 		MainController.onClick(ae);
 	}
 
+	/**
+	 * Ausgabe des Benutzer Menü-Buttons
+	 * @return Benutzer Menü-Button
+	 */
 	public JButton getBenutzerMB() {
 		return benutzerMB;
 	}
 
+	/**
+	 * Ausgabe des Aufgaben Menü-Buttons
+	 * @return Aufgaben Menü-Button
+	 */
 	public JButton getAufgabenMB() {
 		return aufgabenMB;
 	}
-
+	
+	/**
+	 * Ausgabe des ToDo Menü-Buttons
+	 * @return ToDo Menü-Button
+	 */
 	public JButton getToDoMB() {
 		return toDoMB;
 	}
 
+	/**
+	 * Ausgabe der Benutzer-Buttons
+	 * @return Benutzer-Buttons
+	 */
 	public JButton[] getBenutzerButtons() {
 		return benutzerButtons;
 	}
 
+	/**
+	 * Ausgabe des Generieren Buttons
+	 * @return Generieren Button
+	 */
 	public JButton getGenerierenButton() {
 		return generierenBtn;
 	}
 
+	/**
+	 * Ausgabe des Aufgabe hinzufügen Buttons
+	 * @return Aufgabe hinzufügen Button
+	 */
 	public JButton getAufgabenplusButton() {
 		return aufgabenplus;
 	}
 
+	/**
+	 * Ausgabe des Exportieren-Buttons
+	 * @return Exportieren-Button
+	 */
 	public JButton getExportButton() {
 		return exportBtn;
 	}
 
+	/**
+	 * Ausgabe des Benutzer-Panels
+	 * @return Benutzer-Panel
+	 */
 	public JPanel getBenutzerPanel() {
 		return benutzer;
 	}
 
+	/**
+	 * Ausgabe des Aufgaben-Panels
+	 * @return Aufgaben-Panel
+	 */
 	public JPanel getAufgabenPanel() {
 		return aufgaben;
 	}
 
-	public JPanel getKalenderPanel() {
-		return kalender;
+	/**
+	 * Ausgabe des ToDo-Panels
+	 * @return ToDo-Panel
+	 */
+	public JPanel getToDoPanel() {
+		return toDoPanel;
 	}
 
+	/**
+	 * Ausgabe des Haupt-Panels
+	 * @return Haupt-Panel
+	 */
 	public JPanel getHauptPanel() {
 		return haupt;
 	}
 
+	/**
+	 * Ausgabe der Aufgaben-Panels
+	 * @return Liste mit Aufgaben-Panels
+	 */
 	public LinkedList<JPanel> getAufgabenPanels() {
 		return aufgabenPanels;
 	}
 
+	/**
+	 * Ausgabe der Breite des Hauptfensters
+	 * @return Breite des Hauptfensters
+	 */
 	public int getHauptWidth() {
 		return hauptWidth;
 	}
 	
+	/**
+	 * Ausgabe des Inhaltes des Startdatum-Feldes
+	 * @return Inhalt des Startdatum-Feldes
+	 */
 	public String getStartDate() {
 		return startDate.getText();
 	}
 	
+	/**
+	 * Ausgabe des Inhaltes des Enddatum-Feldes
+	 * @return Inhalt des Enddatum-Feldes
+	 */
 	public String getEndDate() {
 		return endDate.getText();
 	}

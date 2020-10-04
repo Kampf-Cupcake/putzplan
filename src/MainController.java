@@ -52,19 +52,21 @@ public class MainController {
 			e.printStackTrace();
 		}
 
-		new Benutzer("Andrea", "bilder\\personas\\Persona1.png");
-		new Benutzer("Bernd", "bilder\\personas\\Persona2.png");
-		new Benutzer("Claire", "bilder\\personas\\Persona3.png");
+		// Test-Benutzer
+		//new Benutzer("Andrea", "bilder\\personas\\Persona1.png");
+		//new Benutzer("Bernd", "bilder\\personas\\Persona2.png");
+		//new Benutzer("Claire", "bilder\\personas\\Persona3.png");
 
-		new Aufgabe("Bad putzen", 5, 1);
-		new Aufgabe("Blumen giessen", 1, 3);
-		new Aufgabe("Boden wischen", 3, 1);
-		new Aufgabe("Fenster putzen", 3, 1);
-		new Aufgabe("Küche putzen", 4, 1);
-		new Aufgabe("Müll rausbringen", 1, 7);
-		new Aufgabe("Spülmaschine", 2, 3);
-		new Aufgabe("Staubsaugen", 1, 4);
-		new Aufgabe("Treppenhaus fegen", 2, 1);
+		// Test-Aufgaben
+		//new Aufgabe("Bad putzen", 5, 1);
+		//new Aufgabe("Blumen giessen", 1, 3);
+		//new Aufgabe("Boden wischen", 3, 1);
+		//new Aufgabe("Fenster putzen", 3, 1);
+		//new Aufgabe("Küche putzen", 4, 1);
+		//new Aufgabe("Müll rausbringen", 1, 7);
+		//new Aufgabe("Spülmaschine", 2, 3);
+		//new Aufgabe("Staubsaugen", 1, 4);
+		//new Aufgabe("Treppenhaus fegen", 2, 1);
 	}
 
 	/**
@@ -108,32 +110,49 @@ public class MainController {
 	 * @param ae onClick-Event
 	 */
 	public static void onClick(ActionEvent ae) {
+		// Menü-Button: Benutzer
 		if (ae.getSource() == instanz.getBenutzerMB()) {
 			instanz.getBenutzerPanel().setVisible(true);
 			instanz.getAufgabenPanel().setVisible(false);
-			instanz.getKalenderPanel().setVisible(false);
+			instanz.getToDoPanel().setVisible(false);
 			instanz.getHauptPanel().setBackground(new Color(1, 83, 82));
-		} else if (ae.getSource() == instanz.getAufgabenMB()) {
+		} 
+		// Menü-Button: Aufgaben
+		else if (ae.getSource() == instanz.getAufgabenMB()) {
 			instanz.getBenutzerPanel().setVisible(false);
 			instanz.getAufgabenPanel().setVisible(true);
-			instanz.getKalenderPanel().setVisible(false);
+			instanz.getToDoPanel().setVisible(false);
 			instanz.getHauptPanel().setBackground(new Color(99, 0, 0));
-		} else if (ae.getSource() == instanz.getToDoMB()) {
+		} 
+		// Menü-Button: ToDo
+		else if (ae.getSource() == instanz.getToDoMB()) {
 			instanz.getBenutzerPanel().setVisible(false);
 			instanz.getAufgabenPanel().setVisible(false);
-			instanz.getKalenderPanel().setVisible(true);
+			instanz.getToDoPanel().setVisible(true);
 			instanz.getHauptPanel().setBackground(new Color(22, 35, 54));
-		} else if (ae.getSource() == instanz.getBenutzerButtons()[0] && Benutzer.getAlleBenutzer().size() < 1) {
+		} 
+		// Benutzer-Button 1
+		else if (ae.getSource() == instanz.getBenutzerButtons()[0] && Benutzer.getAlleBenutzer().size() < 1) {
 			NeuerBenutzerController.getInstanz().setVisible(true);
-		} else if (ae.getSource() == instanz.getBenutzerButtons()[1] && Benutzer.getAlleBenutzer().size() < 2) {
+		} 
+		// Benutzer-Button 2
+		else if (ae.getSource() == instanz.getBenutzerButtons()[1] && Benutzer.getAlleBenutzer().size() < 2) {
 			NeuerBenutzerController.getInstanz().setVisible(true);
-		} else if (ae.getSource() == instanz.getBenutzerButtons()[2] && Benutzer.getAlleBenutzer().size() < 3) {
+		} 
+		// Benutzer-Button 3
+		else if (ae.getSource() == instanz.getBenutzerButtons()[2] && Benutzer.getAlleBenutzer().size() < 3) {
 			NeuerBenutzerController.getInstanz().setVisible(true);
-		} else if (ae.getSource() == instanz.getAufgabenplusButton()) {
+		} 
+		// Aufgabe hinzufügen Button
+		else if (ae.getSource() == instanz.getAufgabenplusButton()) {
 			NeueAufgabeController.getInstanz().setVisible(true);
-		} else if (ae.getSource() == instanz.getGenerierenButton()) {
+		} 
+		// Generieren Button
+		else if (ae.getSource() == instanz.getGenerierenButton()) {
 			planGenerieren();
-		} else if (ae.getSource() == instanz.getExportButton()) {
+		} 
+		// Exportieren Button
+		else if (ae.getSource() == instanz.getExportButton()) {
 			try {
 				planExportieren();
 			} catch (IOException e) {
@@ -153,6 +172,7 @@ public class MainController {
 			System.out.println("Startdatum muss vor Enddatum liegen.");
 			return;
 		}
+		// Prüfen, ob der Zeitraum lang genug ist
 		int zeitraum = start.until(end).getDays() + 1;
 		int haeufigste = 0;
 		for (Aufgabe a : Aufgabe.getAlleAufgaben()) {
@@ -164,12 +184,11 @@ public class MainController {
 			System.out.println("Zeitraum zu kuz");
 			return;
 		}
-
+		// Benutzer in zufälliger Reihenfolge
 		LinkedList<Benutzer> benutzer = (LinkedList<Benutzer>) Benutzer.getAlleBenutzer().clone();
 		Collections.shuffle(benutzer);
 		LinkedList<Aufgabe> aufgaben = Aufgabe.getAlleAufgaben();
 		LinkedList<Integer> schwierigk = new LinkedList<Integer>();
-		Benutzer ben = null;
 
 		for (Benutzer b : benutzer) {
 			schwierigk.add(0);
@@ -180,7 +199,7 @@ public class MainController {
 			// Benutzer durchlaufen
 			for (int aktuell = 0; aktuell < benutzer.size(); aktuell++) {
 				boolean istKleinste = true;
-				// Benutzer für Aufgabe finden
+				// Vergleich mit anderen Benutzern, um Aufgabe zu verteilen
 				for (int vergleich = aktuell + 1; vergleich < benutzer.size(); vergleich++) {
 					if (schwierigk.get(vergleich) < schwierigk.get(aktuell)) {
 						istKleinste = false;
@@ -195,21 +214,17 @@ public class MainController {
 									(aufgaben.get(aktuelleAufgabe).getSchwierigkeit()
 											* aufgaben.get(aktuelleAufgabe).getHaeufigkeit())
 											+ schwierigk.get(aktuell));
-
-					ben = benutzer.get(aktuell);
-					// ben.aufgabeGeben(aufgaben.get(aktuelleAufgabe));
+					Benutzer ben = benutzer.get(aktuell);
+					// Daten generieren
 					int h = aufgaben.get(aktuelleAufgabe).getHaeufigkeit();
 					int pause = zeitraum / h;
 					LocalDate d = start;
-					// Daten generieren
 					for (int i = 0; i < h; i++) {
 						new AufgabeMitDatum(aufgaben.get(aktuelleAufgabe), d, ben);
-
 						// Label für Aufgabe
 						JLabel l = new JLabel();
 						l.setAlignmentX(Component.LEFT_ALIGNMENT);
 						instanz.getAufgabenPanels().get(Benutzer.getAlleBenutzer().indexOf(ben)).add(l);
-
 						// Typewriter-Animation
 						ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 						executorService.scheduleAtFixedRate(new Runnable() {
@@ -219,8 +234,8 @@ public class MainController {
 							@Override
 							public void run() {
 								char[] content = str.toCharArray();
-								if (l.getText().length() < content.length) {
-									l.setText(l.getText() + content[l.getText().length()]);
+								if (label.getText().length() < content.length) {
+									label.setText(label.getText() + content[label.getText().length()]);
 								}
 							}
 
@@ -230,6 +245,7 @@ public class MainController {
 								return (this);
 							}
 						}.init(l, d + ": " + aufgaben.get(aktuelleAufgabe).getName()), 0, 100, TimeUnit.MILLISECONDS);
+						// Nächstes Datum
 						d = d.plusDays(pause);
 					}
 					break;
@@ -237,6 +253,7 @@ public class MainController {
 			}
 		}
 		instanz.getGenerierenButton().setEnabled(false);
+		instanz.getExportButton().setEnabled(true);
 	}
 
 	/**

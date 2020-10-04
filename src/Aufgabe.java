@@ -19,8 +19,8 @@ public class Aufgabe {
 		this.schwierigkeit = s;
 		this.haeufigkeit = h;
 
+		// Neu sortieren der Aufgabenliste
 		LinkedList<Aufgabe> neu = (LinkedList<Aufgabe>) alleAufgaben.clone();
-
 		if (!alleAufgaben.isEmpty()) {
 			if (s * h < alleAufgaben.get(alleAufgaben.size() - 1).getSchwierigkeit()
 					* alleAufgaben.get(alleAufgaben.size() - 1).getHaeufigkeit()) {
