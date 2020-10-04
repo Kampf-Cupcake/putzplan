@@ -7,6 +7,7 @@ public class Benutzer {
 	private int id;
 	private static int i = 0;
 	LinkedList<Aufgabe> aufgabenliste = new LinkedList<Aufgabe>();
+	LinkedList<AufgabeMitDatum> aufgabenplan = new LinkedList<AufgabeMitDatum>();
 	private static LinkedList<Benutzer> alleBenutzer = new LinkedList<Benutzer>();
 
 	public Benutzer(String n, String b) {
@@ -30,6 +31,10 @@ public class Benutzer {
 	public void aufgabeGeben(Aufgabe a) {
 		this.aufgabenliste.add(a);
 	}
+	
+	public void datumGeben(AufgabeMitDatum a) {
+		aufgabenplan.add(a);
+	}
 
 	public String getBild() {
 		return this.bild;
@@ -37,5 +42,9 @@ public class Benutzer {
 
 	public static LinkedList<Benutzer> getAlleBenutzer() {
 		return alleBenutzer;
+	}
+	
+	public LinkedList<AufgabeMitDatum> getAufgabenplan(){
+		return this.aufgabenplan;
 	}
 }

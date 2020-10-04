@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -48,6 +49,9 @@ public class MainWindow extends JFrame implements ActionListener {
 	private LinkedList<JPanel> persPanels = new LinkedList<JPanel>();
 	private LinkedList<JPanel> aufgabenPanels = new LinkedList<JPanel>();
 
+	private JTextField startDate = new JTextField();
+	private JTextField endDate = new JTextField();
+
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private int windowHeight = (int) Math.ceil(0.8 * screenSize.getHeight());
 	private int windowWidth = (int) Math.ceil(1.35 * windowHeight);
@@ -88,14 +92,14 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		// Haupt
 		haupt.setPreferredSize(new Dimension(hauptWidth, windowHeight));
-		haupt.setBackground(new Color(22, 35, 54));
+		haupt.setBackground(new Color(1, 83, 82));
 
 		// Haupt: Benutzer
 		haupt.add(benutzer);
 		benutzer.setPreferredSize(new Dimension(hauptWidth, windowHeight));
 		benutzer.setLayout(new BoxLayout(benutzer, BoxLayout.X_AXIS));
 		benutzer.setBackground(new Color(1, 83, 82));
-		benutzer.setVisible(false);
+		benutzer.setVisible(true);
 
 		for (JButton b : benutzerButtons) {
 			b.setIcon(resize(new ImageIcon("bilder\\icons\\plus.png"), hauptWidth / 3));
@@ -125,10 +129,23 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		// Haupt: ToDo
 		kalender.setBackground(new Color(22, 35, 54));
+		kalender.setLayout(new BorderLayout());
+		startDate.setText(LocalDate.now().toString());
+		endDate.setText(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().lengthOfMonth()).toString());
+		startDate.setMargin(new Insets(5,5,5,5));
+		endDate.setMargin(new Insets(5,5,5,5));
+		startDate.setHorizontalAlignment(JTextField.CENTER);
+		endDate.setHorizontalAlignment(JTextField.CENTER);
+		JPanel dates = new JPanel();
+		dates.setLayout(new BoxLayout(dates, BoxLayout.X_AXIS));
+		dates.add(startDate);
+		dates.add(endDate);
+		kalender.add(dates, BorderLayout.NORTH);
+		
 		toDoList.setLayout(new BoxLayout(toDoList, BoxLayout.Y_AXIS));
 		toDoList.setBackground(Color.LIGHT_GRAY);
-		
-		kalender.add(toDoList, BorderLayout.EAST);
+
+		kalender.add(toDoList, BorderLayout.CENTER);
 
 		JPanel toDoBtns = new JPanel();
 		toDoBtns.setLayout(new BoxLayout(toDoBtns, BoxLayout.Y_AXIS));
@@ -136,9 +153,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		toDoBtns.add(generierenBtn);
 		exportBtn.addActionListener(this);
 		toDoBtns.add(exportBtn);
-		kalender.add(toDoBtns, BorderLayout.WEST);
+		kalender.add(toDoBtns, BorderLayout.EAST);
 		haupt.add(kalender);
-		kalender.setVisible(true);
+		kalender.setVisible(false);
 		pack();
 	}
 
@@ -205,15 +222,19 @@ public class MainWindow extends JFrame implements ActionListener {
 		return haupt;
 	}
 
-	//public LinkedList<JPanel> getPersonPanels() {
-	//	return persPanels;
-	//}
-
 	public LinkedList<JPanel> getAufgabenPanels() {
 		return aufgabenPanels;
 	}
 
 	public int getHauptWidth() {
 		return hauptWidth;
+	}
+	
+	public String getStartDate() {
+		return startDate.getText();
+	}
+	
+	public String getEndDate() {
+		return endDate.getText();
 	}
 }

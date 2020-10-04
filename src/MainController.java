@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.Executors;
@@ -109,7 +110,6 @@ public class MainController {
 		} else if (ae.getSource() == instanz.getAufgabenplusButton()) {
 			NeueAufgabeController.getInstanz().setVisible(true);
 		} else if (ae.getSource() == instanz.getGenerierenButton()) {
-			instanz.getGenerierenButton().setEnabled(false);
 			planGenerieren();
 		} else if (ae.getSource() == instanz.getExportButton()) {
 			try {
@@ -121,62 +121,108 @@ public class MainController {
 	}
 
 	public static void planGenerieren() {
+		// Datumseingaben prüfen
+		LocalDate start = LocalDate.parse(instanz.getStartDate());
+		LocalDate end = LocalDate.parse(instanz.getEndDate());
+		if (start.isAfter(end)) {
+			System.out.println("Startdatum muss vor Enddatum liegen.");
+			return;
+		}
+		int zeitraum = start.until(end).getDays() + 1;
+		int haeufigste = 0;
+		for (Aufgabe a : Aufgabe.getAlleAufgaben()) {
+			if (a.getHaeufigkeit() > haeufigste) {
+				haeufigste = a.getHaeufigkeit();
+			}
+		}
+		System.out.println("Zr: " + zeitraum + " H: " + haeufigste);
+		if (haeufigste > zeitraum) {
+			System.out.println("Zeitraum zu kruz");
+			return;
+		}
+
 		LinkedList<Benutzer> benutzer = (LinkedList<Benutzer>) Benutzer.getAlleBenutzer().clone();
 		Collections.shuffle(benutzer);
 		LinkedList<Aufgabe> aufgaben = Aufgabe.getAlleAufgaben();
 		LinkedList<Integer> schwierigk = new LinkedList<Integer>();
+		Benutzer ben = null;
 
 		for (Benutzer b : benutzer) {
 			schwierigk.add(0);
 		}
 
+		// Aufgaben durchlaufen
 		for (int aktuelleAufgabe = 0; aktuelleAufgabe < aufgaben.size(); aktuelleAufgabe++) {
+			// Benutzer durchlaufen
 			for (int aktuell = 0; aktuell < schwierigk.size(); aktuell++) {
 				boolean istKleinste = true;
+				// Benutzer für Aufgabe finden
 				for (int vergleich = aktuell + 1; vergleich < schwierigk.size(); vergleich++) {
 					if (schwierigk.get(vergleich) < schwierigk.get(aktuell)) {
 						istKleinste = false;
 						break;
 					}
 				}
+				// Richtiger Benutzer
 				if (istKleinste) {
+					// Wert für Person erhöhen
 					schwierigk
 							.set(aktuell,
 									(aufgaben.get(aktuelleAufgabe).getSchwierigkeit()
 											* aufgaben.get(aktuelleAufgabe).getHaeufigkeit())
 											+ schwierigk.get(aktuell));
-					Benutzer.getAlleBenutzer().get(aktuell).aufgabeGeben(aufgaben.get(aktuelleAufgabe));
-					JLabel l = new JLabel();
-					instanz.getAufgabenPanels().get(aktuell).add(l);
-					ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-					executorService.scheduleAtFixedRate(new Runnable() {
-						JLabel label;
-						String str;
+					
+					ben = benutzer.get(aktuell);
+					System.out.println(ben + " " + aufgaben.get(aktuelleAufgabe));
+					// ben.aufgabeGeben(aufgaben.get(aktuelleAufgabe));
+					int h = aufgaben.get(aktuelleAufgabe).getHaeufigkeit();
+					int pause = zeitraum / h;
+					LocalDate d = start;
+					// Daten generieren
+					for (int i = 0; i < h; i++) {
+						new AufgabeMitDatum(aufgaben.get(aktuelleAufgabe), d, ben);
 
-						@Override
-						public void run() {
-							typewriter(label, str);
-						}
+						// Label für Aufgabe
+						JLabel l = new JLabel();
+						instanz.getAufgabenPanels().get(Benutzer.getAlleBenutzer().indexOf(ben)).add(l);
 
-						public Runnable init(JLabel l, String s) {
-							this.str = s;
-							this.label = l;
-							return (this);
-						}
-					}.init(l, aufgaben.get(aktuelleAufgabe).getName()), 0, 300, TimeUnit.MILLISECONDS);
-					break;
+						// Typewriter-Animation
+						ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+						executorService.scheduleAtFixedRate(new Runnable() {
+							JLabel label;
+							String str;
+
+							@Override
+							public void run() {
+								char[] content = str.toCharArray();
+								if (l.getText().length() < content.length) {
+									l.setText(l.getText() + content[l.getText().length()]);
+								}
+							}
+
+							public Runnable init(JLabel l, String s) {
+								this.str = s;
+								this.label = l;
+								return (this);
+							}
+						}.init(l, d + ": " + aufgaben.get(aktuelleAufgabe).getName()), 0, 100, TimeUnit.MILLISECONDS);
+						d = d.plusDays(pause);
+					}
+
 				}
 			}
-		}
-		instanz.revalidate();
-	}
 
-	// JLabel l, String s \ l, aufgaben.get(aktuelleAufgabe).getName()
-	public static void typewriter(JLabel l, String s) {
-		char[] content = s.toCharArray();
-		if (l.getText().length() < content.length) {
-			l.setText(l.getText() + content[l.getText().length()]);
+			// Verteilung auf Tage
+			/*
+			 * int h = aufgaben.get(aktuelleAufgabe).getHaeufigkeit(); int pause =
+			 * zeitraum/h; LocalDate d = start; for(int i = 0; i < h; i++) { new
+			 * AufgabeMitDatum(aufgaben.get(aktuelleAufgabe), d, ben); d =
+			 * d.plusDays(pause); }
+			 */
 		}
+
+		// Button disabled
+		instanz.getGenerierenButton().setEnabled(false);
 	}
 
 	public static void buildToDoPanel(Benutzer b) {
