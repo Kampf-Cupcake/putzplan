@@ -29,7 +29,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JPanel kalender = new JPanel();
 	private JPanel toDoList = new JPanel();
 
-
 	private JButton benutzerMB = new JButton();
 	private JButton aufgabenMB = new JButton();
 	private JButton toDoMB = new JButton();
@@ -39,22 +38,24 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JButton aufgabenplus = new JButton();
 	private JButton generierenBtn = new JButton("Generieren");
 	private JButton exportBtn = new JButton("Exportieren");
-	
-	JButton[] benutzerButtons = {person1, person2, person3};
-	
-	private DefaultTableModel tableModel = new DefaultTableModel(new String[] { "Name", "Schwierigkeit", "Haeufigkeit" }, 0);
+
+	JButton[] benutzerButtons = { person1, person2, person3 };
+
+	private DefaultTableModel tableModel = new DefaultTableModel(
+			new String[] { "Name", "Schwierigkeit", "Haeufigkeit" }, 0);
 	private JTable aufgabenauflistung = new JTable(tableModel);
-	
+
+	private LinkedList<JPanel> persPanels = new LinkedList<JPanel>();
 	private LinkedList<JPanel> aufgabenPanels = new LinkedList<JPanel>();
 
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private int windowHeight = (int) Math.ceil(0.8 * screenSize.getHeight());
 	private int windowWidth = (int) Math.ceil(1.35 * windowHeight);
-	private int menuWidth = (int) (windowWidth/6);
+	private int menuWidth = (int) (windowWidth / 6);
 	private int hauptWidth = windowWidth - menuWidth;
 
 	public MainWindow() {
-		
+
 		// MainWindow
 		setTitle("Putzplan");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,20 +65,20 @@ public class MainWindow extends JFrame implements ActionListener {
 		hintergrund.setLayout(new BoxLayout(hintergrund, BoxLayout.X_AXIS));
 		hintergrund.add(menu);
 		hintergrund.add(haupt);
-		//Insets insets = hintergrund.getInsets();
+		// Insets insets = hintergrund.getInsets();
 		hintergrund.setPreferredSize(new Dimension(windowWidth, windowHeight));
-		add(hintergrund);	
+		add(hintergrund);
 
 		// Menu
 		menu.setPreferredSize(new Dimension(menuWidth, windowHeight));
 		menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 
 		// Menu-Buttons
-		JButton[] menuButtons = {benutzerMB, aufgabenMB, toDoMB};
+		JButton[] menuButtons = { benutzerMB, aufgabenMB, toDoMB };
 		benutzerMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_benutzer3.png"), (int) (menuWidth)));
 		aufgabenMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_aufgaben3.png"), (int) (menuWidth)));
 		toDoMB.setIcon(resize(new ImageIcon("bilder\\icons\\menu_toDo.png"), (int) (menuWidth)));
-		for(JButton b : menuButtons) {
+		for (JButton b : menuButtons) {
 			b.setMargin(new Insets(-4, 0, -4, 0));
 			b.addActionListener(this);
 			b.setBorderPainted(false);
@@ -96,15 +97,15 @@ public class MainWindow extends JFrame implements ActionListener {
 		benutzer.setBackground(new Color(1, 83, 82));
 		benutzer.setVisible(false);
 
-		for(JButton b : benutzerButtons) {
+		for (JButton b : benutzerButtons) {
 			b.setIcon(resize(new ImageIcon("bilder\\icons\\plus.png"), hauptWidth / 3));
 			b.setBorderPainted(false);
 			b.setContentAreaFilled(false);
 			b.addActionListener(this);
-			b.setMargin(new Insets(0,0,0,0));
+			b.setMargin(new Insets(0, 0, 0, 0));
 			benutzer.add(b);
 		}
-		
+
 		// Haupt: Aufgaben
 		aufgaben.setBackground(new Color(99, 0, 0));
 		aufgaben.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, -40));
@@ -122,14 +123,13 @@ public class MainWindow extends JFrame implements ActionListener {
 		aufgabenplus.addActionListener(this);
 		aufgaben.add(aufgabenplus, BorderLayout.EAST);
 
-		// Haupt: Kalender
+		// Haupt: ToDo
 		kalender.setBackground(new Color(22, 35, 54));
 		toDoList.setLayout(new BoxLayout(toDoList, BoxLayout.Y_AXIS));
+		toDoList.setBackground(Color.LIGHT_GRAY);
+		
 		kalender.add(toDoList, BorderLayout.EAST);
-		
-		MainController.buildToDoPanels();
-		toDoList.doLayout();
-		
+
 		JPanel toDoBtns = new JPanel();
 		toDoBtns.setLayout(new BoxLayout(toDoBtns, BoxLayout.Y_AXIS));
 		generierenBtn.addActionListener(this);
@@ -139,7 +139,6 @@ public class MainWindow extends JFrame implements ActionListener {
 		kalender.add(toDoBtns, BorderLayout.WEST);
 		haupt.add(kalender);
 		kalender.setVisible(true);
-
 		pack();
 	}
 
@@ -149,15 +148,15 @@ public class MainWindow extends JFrame implements ActionListener {
 		i = new ImageIcon(image.getScaledInstance(width, newH, java.awt.Image.SCALE_SMOOTH));
 		return i;
 	}
-	
+
 	public DefaultTableModel getTableModel() {
 		return tableModel;
 	}
-	
+
 	public JPanel getToDoList() {
 		return toDoList;
 	}
-	
+
 	public void actionPerformed(ActionEvent ae) {
 		MainController.onClick(ae);
 	}
@@ -173,43 +172,47 @@ public class MainWindow extends JFrame implements ActionListener {
 	public JButton getToDoMB() {
 		return toDoMB;
 	}
-	
+
 	public JButton[] getBenutzerButtons() {
 		return benutzerButtons;
 	}
-	
+
 	public JButton getGenerierenButton() {
 		return generierenBtn;
 	}
-	
+
 	public JButton getAufgabenplusButton() {
 		return aufgabenplus;
 	}
-	
+
 	public JButton getExportButton() {
 		return exportBtn;
 	}
-	
+
 	public JPanel getBenutzerPanel() {
 		return benutzer;
 	}
-	
+
 	public JPanel getAufgabenPanel() {
 		return aufgaben;
 	}
-	
+
 	public JPanel getKalenderPanel() {
 		return kalender;
 	}
-	
+
 	public JPanel getHauptPanel() {
 		return haupt;
 	}
-	
-	public LinkedList<JPanel> getAufgabenPanels(){
+
+	//public LinkedList<JPanel> getPersonPanels() {
+	//	return persPanels;
+	//}
+
+	public LinkedList<JPanel> getAufgabenPanels() {
 		return aufgabenPanels;
 	}
-	
+
 	public int getHauptWidth() {
 		return hauptWidth;
 	}

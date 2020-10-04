@@ -13,7 +13,7 @@ public class NeuerBenutzerController {
 		}
 		return instanz;
 	}
-	
+
 	public static void confirmUser(JTextField nameField, String file) {
 		if (!nameField.getText().equals("Name")) {
 			new Benutzer(nameField.getText(), file);

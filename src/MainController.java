@@ -1,4 +1,6 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -6,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -45,14 +51,15 @@ public class MainController {
 
 		new Aufgabe("Bad putzen", 5, 1);
 		new Aufgabe("Blumen giessen", 1, 3);
-		new Aufgabe("Boden wischen", 3, 1);// f
-		new Aufgabe("Fenster putzen", 3, 1);// f
+		new Aufgabe("Boden wischen", 3, 1);
+		new Aufgabe("Fenster putzen", 3, 1);
 		new Aufgabe("Küche putzen", 4, 1);
 		new Aufgabe("Müll rausbringen", 1, 7);
 		new Aufgabe("Spülmaschine", 2, 3);
 		new Aufgabe("Staubsaugen", 1, 4);
 		new Aufgabe("Treppenhaus fegen", 2, 1);
-		
+
+		instanz.revalidate();
 	}
 
 	public static void updateAufgaben() {
@@ -87,7 +94,6 @@ public class MainController {
 			instanz.getHauptPanel().setBackground(new Color(1, 83, 82));
 		} else if (ae.getSource() == instanz.getAufgabenMB()) {
 			instanz.getBenutzerPanel().setVisible(false);
-			// benutzer1.setVisible(false);
 			instanz.getAufgabenPanel().setVisible(true);
 			instanz.getKalenderPanel().setVisible(false);
 			instanz.getHauptPanel().setBackground(new Color(99, 0, 0));
@@ -103,12 +109,12 @@ public class MainController {
 		} else if (ae.getSource() == instanz.getAufgabenplusButton()) {
 			NeueAufgabeController.getInstanz().setVisible(true);
 		} else if (ae.getSource() == instanz.getGenerierenButton()) {
+			instanz.getGenerierenButton().setEnabled(false);
 			planGenerieren();
 		} else if (ae.getSource() == instanz.getExportButton()) {
 			try {
 				planExportieren();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -140,7 +146,24 @@ public class MainController {
 											* aufgaben.get(aktuelleAufgabe).getHaeufigkeit())
 											+ schwierigk.get(aktuell));
 					Benutzer.getAlleBenutzer().get(aktuell).aufgabeGeben(aufgaben.get(aktuelleAufgabe));
-					instanz.getAufgabenPanels().get(aktuell).add(new JLabel(aufgaben.get(aktuelleAufgabe).getName()));
+					JLabel l = new JLabel();
+					instanz.getAufgabenPanels().get(aktuell).add(l);
+					ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+					executorService.scheduleAtFixedRate(new Runnable() {
+						JLabel label;
+						String str;
+
+						@Override
+						public void run() {
+							typewriter(label, str);
+						}
+
+						public Runnable init(JLabel l, String s) {
+							this.str = s;
+							this.label = l;
+							return (this);
+						}
+					}.init(l, aufgaben.get(aktuelleAufgabe).getName()), 0, 300, TimeUnit.MILLISECONDS);
 					break;
 				}
 			}
@@ -148,39 +171,42 @@ public class MainController {
 		instanz.revalidate();
 	}
 
-	public static void buildToDoPanels() {
-		LinkedList<JPanel> persPanels = new LinkedList<JPanel>();
-		int i = 0;
-		for (Benutzer b : Benutzer.getAlleBenutzer()) {
-			JPanel personPanel = new JPanel();
-			personPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 200));
-			personPanel.setBackground(new Color(i * 30 + 80, i * 30 + 80, i * 30 + 80));
-			personPanel.setLayout(new GridBagLayout());
-			GridBagConstraints c = new GridBagConstraints();
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.gridx = 0;
-			c.gridy = 0;
-
-			JLabel bild = new JLabel();
-			bild.setIcon(instanz.resize(new ImageIcon(b.getBild()), instanz.getHauptWidth() / 10));
-			personPanel.add(bild);
-
-			JLabel name = new JLabel(b.toString());
-			name.setFont(new Font("Arial", 1, 24));
-			personPanel.add(name);
-
-			c.gridy = 0;
-			c.gridy = i;
-			persPanels.add(personPanel);
-			instanz.getToDoList().add(personPanel);
-
-			JPanel aufgaben = new JPanel();
-			aufgaben.setBackground(Color.red);
-			aufgaben.setLayout(new BoxLayout(aufgaben, BoxLayout.Y_AXIS));
-			instanz.getAufgabenPanels().add(aufgaben);
-			instanz.getToDoList().add(aufgaben);
-
-			i++;
+	// JLabel l, String s \ l, aufgaben.get(aktuelleAufgabe).getName()
+	public static void typewriter(JLabel l, String s) {
+		char[] content = s.toCharArray();
+		if (l.getText().length() < content.length) {
+			l.setText(l.getText() + content[l.getText().length()]);
 		}
+	}
+
+	public static void buildToDoPanel(Benutzer b) {
+
+		JPanel personPanel = new JPanel();
+		personPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, instanz.getHauptWidth() / 4));
+		personPanel.setBackground(Color.LIGHT_GRAY);
+		personPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+
+		JLabel bild = new JLabel();
+		bild.setIcon(instanz.resize(new ImageIcon(b.getBild()), instanz.getHauptWidth() / 10));
+		bild.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		personPanel.add(bild);
+
+		JLabel name = new JLabel(b.toString());
+		name.setFont(new Font("Arial", 1, 32));
+		personPanel.add(name);
+
+		c.gridy = 0;
+		c.gridy = b.getID();
+		instanz.getToDoList().add(personPanel);
+
+		JPanel aufgaben = new JPanel();
+		aufgaben.setBackground(Color.LIGHT_GRAY);
+		aufgaben.setLayout(new BoxLayout(aufgaben, BoxLayout.Y_AXIS));
+		instanz.getAufgabenPanels().add(aufgaben);
+		instanz.getToDoList().add(aufgaben);
 	}
 }
