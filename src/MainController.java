@@ -53,10 +53,10 @@ public class MainController {
 		}
 
 		// Test-Benutzer
-		/*
+		
 		new Benutzer("Andrea", "bilder\\personas\\Persona1.png");
 		new Benutzer("Bernd", "bilder\\personas\\Persona2.png");
-		new Benutzer("Claire", "bilder\\personas\\Persona3.png");
+		//new Benutzer("Claire", "bilder\\personas\\Persona3.png");
 		
 		// Test-Aufgaben
 		
@@ -69,7 +69,7 @@ public class MainController {
 		new Aufgabe("Spülmaschine", 2, 3);
 		new Aufgabe("Staubsaugen", 1, 4);
 		new Aufgabe("Treppenhaus fegen", 2, 1);
-		*/
+		
 	}
 
 	/**
